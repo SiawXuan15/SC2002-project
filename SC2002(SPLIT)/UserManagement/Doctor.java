@@ -206,16 +206,19 @@ public Patient findPatientById(String patientId) {
         boolean found = false;
         try {
             List<String[]> doctorAppointments = appointmentManager.getAppointmentsByDoctor(this.getUserID());
+            List<String[]> scheduledAppointments = new ArrayList<>();
             String doctorName = userManager.getUserName(this.getUserID());
 
             if (doctorAppointments.isEmpty()) {
                 System.out.println("No appointments found for doctor " + doctorName);
             } else {
-                found = true;
                 System.out.println("Scheduled appointments for doctor " + doctorName + ":");
                 for (String[] appointment : doctorAppointments) {
                     if ("Confirmed".equals(appointment[5]) || "Pending".equals(appointment[5]) || "Completed".equals(appointment[5])) {
                         found = true;
+
+                        scheduledAppointments.add(appointment);
+
                         System.out.println("Appointment ID: " + appointment[0] +
                                 ", Patient: " + userManager.getUserName(appointment[1]) +
                                 ", Doctor: " + doctorName +
@@ -225,10 +228,14 @@ public Patient findPatientById(String patientId) {
                     }
                 }
 
-                if (!found) {
+                if (scheduledAppointments.isEmpty()) {
                     System.out.println("No appointments found for doctor " + doctorName);
-                    return false;
                 }
+
+                //if (!found) {
+                   // System.out.println("No appointments found for doctor " + doctorName);
+                   // return false;
+               // }
             }
         } catch (IOException e) {
             System.out.println("Error reading appointments: " + e.getMessage());
