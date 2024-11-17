@@ -8,15 +8,15 @@ import java.util.*;
 public class UserMenus {
     public static void main(String args[]) throws IOException {
         // File paths for CSV files
-        String staffFilePath = "src/Data/Staff_List.csv";
-        String medicineFilePath = "src/Data/Medicine_List.csv";
-        String patientFilePath = "src/Data/Patient_List.csv";
-        String medicalRecordsFilePath = "src/Data/Medical_Records.csv";
-        String appointmentsFilePath = "src/Data/Appointments.csv";
-        String userFilePath = "src/Data/User_List.csv";
-        String appointmentOutcomeFilePath = "src/Data/Appointment_Outcome.csv";
-        String orderRequestFilePath = "src/Data/OrderRequest.csv";
-        String prescriptionFilePath = "src/Data/Prescription.csv";
+        String staffFilePath = "SC2002(SPLIT)/Data/Staff_List.csv";
+        String medicineFilePath = "SC2002(SPLIT)/Data/Medicine_List.csv";
+        String patientFilePath = "SC2002(SPLIT)/Data/Patient_List.csv";
+        String medicalRecordsFilePath = "SC2002(SPLIT)/Data/Medical_Records.csv";
+        String appointmentsFilePath = "SC2002(SPLIT)/Data/Appointments.csv";
+        String userFilePath = "SC2002(SPLIT)/Data/User_List.csv";
+        String appointmentOutcomeFilePath = "SC2002(SPLIT)/Data/Appointment_Outcome.csv";
+        String orderRequestFilePath = "SC2002(SPLIT)/Data/OrderRequest.csv";
+        String prescriptionFilePath = "SC2002(SPLIT)/Data/Prescription.csv";
     
 
         // Initialize CSVReader and CSVWriter
