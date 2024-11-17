@@ -2,7 +2,6 @@ package Application;
 
 import DataManagement.*;
 import UserManagement.*;
-import InventoryManagement.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -27,7 +26,12 @@ public class UserMenus {
         // Initialize the separate manager classes
         appointmentManager appointmentManager = new appointmentManager(appointmentsFilePath);
         medicalRecordManager medicalRecordManager = new medicalRecordManager(medicalRecordsFilePath);
-        PrescriptionManager prescriptionManager = new PrescriptionManager(appointmentOutcomeFilePath, prescriptionFilePath, appointmentsFilePath, doctorManager, patientManager);
+        prescriptionManager prescriptionManager = new prescriptionManager(
+            prescriptionFilePath,
+            appointmentsFilePath,
+            appointmentOutcomeFilePath,
+            appointmentManager
+        );        
         userManager userManager = new userManager(userFilePath);
         medicineManager medicineManager = new medicineManager(medicineFilePath);
         appointmentOutcomeManager appointmentOutcomeManager = new appointmentOutcomeManager(appointmentOutcomeFilePath, appointmentsFilePath);

@@ -1,58 +1,29 @@
 package DataManagement;
 
-import AppointmentManagement.Appointment;
-import UserManagement.Doctor;
-import UserManagement.Patient;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class prescriptionManager {
     private final String prescriptionFilePath;
     private final String appointmentsFilePath; 
-    private final CSVReader csvReader;
-    private final CSVWriter csvWriter;
-    private final doctorManager doctorManager;
-    private final patientManager patientManager;
     private final String appointmentOutcomeFilePath; 
-    private final userManager userManager; 
     private final appointmentManager appointmentManager;
-    private final appointmentOutcomeManager appointmentOutcomeManager;
-    private final medicalRecordManager medicalRecordManager;
-    private final prescriptionManager prescriptionManager; // You don't really need to include itself, removing to avoid confusion.
-    private final staffManager staffManager;
+    //private final userManager userManager; 
 
-    // Updated Constructor
+    // Updated Constructor with Minimal Dependencies
     public prescriptionManager(
             String prescriptionFilePath,
             String appointmentsFilePath,
             String appointmentOutcomeFilePath,
-            CSVReader csvReader,
-            CSVWriter csvWriter,
-            doctorManager doctorManager,
-            patientManager patientManager,
-            userManager userManager,
-            appointmentManager appointmentManager,
-            appointmentOutcomeManager appointmentOutcomeManager,
-            medicalRecordManager medicalRecordManager,
-            staffManager staffManager,
-            prescriptionManager prescriptionManager) {
+            appointmentManager appointmentManager
+          ) {
         
         this.prescriptionFilePath = prescriptionFilePath;
         this.appointmentsFilePath = appointmentsFilePath;
         this.appointmentOutcomeFilePath = appointmentOutcomeFilePath;
-        this.csvReader = csvReader;
-        this.csvWriter = csvWriter;
-        this.doctorManager = doctorManager;
-        this.patientManager = patientManager;
-        this.userManager = userManager;
         this.appointmentManager = appointmentManager;
-        this.appointmentOutcomeManager = appointmentOutcomeManager;
-        this.medicalRecordManager = medicalRecordManager;
-        this.staffManager = staffManager;
-        this.prescriptionManager = prescriptionManager;
     }
 
 
@@ -198,52 +169,81 @@ public class prescriptionManager {
         return null;
     }
 
-    public Appointment getAppointmentByID(String appointmentID) {
-        try {
-            List<String[]> appointments = CSVReader.readCSV(appointmentsFilePath); // Read the appointments.csv
-            for (String[] record : appointments) {
-                if (record[0].equals(appointmentID)) { // Match the Appointment ID
-                    // Retrieve Patient and Doctor objects using their IDs
-                    // Patient patient = new Patient(record[1], this); 
-                    // Doctor doctor = new Doctor(record[2], this);    
-                    Patient patient = new Patient(
-                        record[1], 
-                        userManager, 
-                        patientManager, 
-                        staffManager, 
-                        appointmentManager, 
-                        medicalRecordManager, 
-                        prescriptionManager, 
-                        doctorManager, 
-                        appointmentOutcomeManager
-                    );
-    
-                    Doctor doctor = new Doctor(
-                        record[2], 
-                        appointmentManager, 
-                        appointmentOutcomeManager, 
-                        medicalRecordManager, 
-                        prescriptionManager, 
-                        userManager
-                    );
-    
-                // Parse the Date and Time
-    
-                    // Parse the Date and Time
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(record[3]);
-                    String time = record[4];
-    
-                    // Create a new Appointment object
-                    Appointment appointment = new Appointment(patient, doctor, date, time);
-                    appointment.setStatus(record[5]); // Set the status if it's different from the default
-    
-                    return appointment; // Return the matching Appointment object
-                }
+    public Map<String, String> getAppointmentDetailsByUserID(String userID) {
+    try {
+        // Read all appointment records from appointments.csv
+        List<String[]> appointments = CSVReader.readCSV(appointmentsFilePath);
+
+        for (String[] record : appointments) {
+            // Check if the userID matches either the patientID or doctorID in the appointment record
+            if (record[1].equalsIgnoreCase(userID) || record[2].equalsIgnoreCase(userID)) {
+                // Create a map to store appointment details
+                Map<String, String> appointmentDetails = new HashMap<>();
+                appointmentDetails.put("AppointmentID", record[0]);
+                appointmentDetails.put("PatientID", record[1]);
+                appointmentDetails.put("DoctorID", record[2]);
+                appointmentDetails.put("Date", record[3]);
+                appointmentDetails.put("Time", record[4]);
+                appointmentDetails.put("Status", record[5]);
+
+                return appointmentDetails; // Return the matching appointment details
             }
-        } catch (IOException | ParseException e) {
-            System.err.println("Error retrieving appointment: " + e.getMessage());
         }
-        return null; // Return null if no match is found
+
+    } catch (IOException e) {
+        System.err.println("Error reading appointments: " + e.getMessage());
     }
+    
+    return null; // Return null if no match is found
+}
+
+
+    // public Appointment getAppointmentByID(String appointmentID) {
+    //     try {
+    //         List<String[]> appointments = CSVReader.readCSV(appointmentsFilePath); // Read the appointments.csv
+    //         for (String[] record : appointments) {
+    //             if (record[0].equals(appointmentID)) { // Match the Appointment ID
+    //                 // Retrieve Patient and Doctor objects using their IDs
+    //                 // Patient patient = new Patient(record[1], this); 
+    //                 // Doctor doctor = new Doctor(record[2], this);    
+    //                 Patient patient = new Patient(
+    //                     record[1], 
+    //                     userManager, 
+    //                     patientManager, 
+    //                     staffManager, 
+    //                     appointmentManager, 
+    //                     medicalRecordManager, 
+    //                     prescriptionManager, 
+    //                     doctorManager, 
+    //                     appointmentOutcomeManager
+    //                 );
+    
+    //                 Doctor doctor = new Doctor(
+    //                     record[2], 
+    //                     appointmentManager, 
+    //                     appointmentOutcomeManager, 
+    //                     medicalRecordManager, 
+    //                     prescriptionManager, 
+    //                     userManager
+    //                 );
+    
+    //             // Parse the Date and Time
+    
+    //                 // Parse the Date and Time
+    //                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(record[3]);
+    //                 String time = record[4];
+    
+    //                 // Create a new Appointment object
+    //                 Appointment appointment = new Appointment(patient, doctor, date, time);
+    //                 appointment.setStatus(record[5]); // Set the status if it's different from the default
+    
+    //                 return appointment; // Return the matching Appointment object
+    //             }
+    //         }
+    //     } catch (IOException | ParseException e) {
+    //         System.err.println("Error retrieving appointment: " + e.getMessage());
+    //     }
+    //     return null; // Return null if no match is found
+    // }
     
 }
