@@ -390,6 +390,20 @@ public Patient findPatientById(String patientId) {
     public void scheduleFollowUp() {
         Scanner scanner = new Scanner(System.in);
 
+        List<String[]> patientList = new ArrayList<>();
+
+        try {
+            patientList = patientManager.getPatientList(); // Fetch patients from patientManager
+        } catch (IOException e) {
+            System.out.println("Error fetching appointments or patient list: " + e.getMessage());
+            return;  // Exit if there's an issue fetching data
+        }
+
+        for (int i = 1; i < patientList.size(); i++) {
+            String[] patient = patientList.get(i);
+            System.out.println("Patient ID: " + patient[0] + ", Patient name: " + patient[3]);
+        }
+
         System.out.println("Enter the patient's name to schedule follow-up appointment:");
         String patientName = scanner.nextLine();
         
@@ -434,6 +448,7 @@ public Patient findPatientById(String patientId) {
 
             // Add new confirmed appointment to appointment_outcome.csv
             appointmentOutcomeManager.addToOutcome(newAppId);
+
             System.out.println("Follow-up appointment with " + patientName + " scheduled successfully for " + followUpDate + " at " + followUpTime);
         } catch (IOException e) {
             System.out.println("Error scheduling follow-up appointment: " + e.getMessage());
