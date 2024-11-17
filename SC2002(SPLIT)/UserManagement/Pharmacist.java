@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Pharmacist extends Users implements InventoryMonitor {
     private final appointmentOutcomeManager appointmentOutcomeManager;
-    private final PrescriptionManager prescriptionManager;
+    private final prescriptionManager prescriptionManager;
     private final medicineManager medicineManager; 
     private final orderRequestManager orderRequestManager; 
     private final userManager userManager;
@@ -218,17 +218,18 @@ this.orderRequestManager = orderRequestManager;
 
     public void dispensePrescriptionForAppointment() {
         Scanner scanner = new Scanner(System.in);
-
+    
         System.out.println("=== Dispense Prescription ===");
         System.out.print("Enter Appointment ID to dispense prescription: ");
         String appointmentID = scanner.nextLine();
-
+    
         try {
             prescriptionManager.dispensePrescription(appointmentID);
         } catch (IOException e) {
             System.err.println("Error dispensing prescription: " + e.getMessage());
         }
     }
+    
 
     // @Override
     // public String getName() {

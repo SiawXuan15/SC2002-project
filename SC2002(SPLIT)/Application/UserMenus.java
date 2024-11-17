@@ -25,16 +25,16 @@ public class UserMenus {
         CSVWriter csvWriter = new CSVWriter();
 
         // Initialize the separate manager classes
-        appointmentManager appointmentManager = new appointmentManager(appointmentsFilePath, csvReader, csvWriter);
-        medicalRecordManager medicalRecordManager = new medicalRecordManager(medicalRecordsFilePath, csvReader, csvWriter);
-        PrescriptionManager prescriptionManager = new PrescriptionManager(appointmentOutcomeFilePath, prescriptionFilePath, appointmentsFilePath, csvReader, csvWriter, doctorManager, patientManager);
-        userManager userManager = new userManager(userFilePath, csvReader, csvWriter);
-        medicineManager medicineManager = new medicineManager(medicineFilePath, csvReader, csvWriter);
-        appointmentOutcomeManager appointmentOutcomeManager = new appointmentOutcomeManager(appointmentOutcomeFilePath, appointmentsFilePath, csvReader, csvWriter);
-        staffManager staffManager = new staffManager(staffFilePath, csvReader, csvWriter);
-        patientManager patientManager = new patientManager(patientFilePath, medicalRecordsFilePath, userFilePath, csvReader, csvWriter);
-        orderRequestManager orderRequestManager = new orderRequestManager(orderRequestFilePath, csvReader, csvWriter);
-        doctorManager doctorManager = new doctorManager(staffFilePath, patientFilePath, medicalRecordsFilePath, userFilePath, csvReader, csvWriter);
+        appointmentManager appointmentManager = new appointmentManager(appointmentsFilePath);
+        medicalRecordManager medicalRecordManager = new medicalRecordManager(medicalRecordsFilePath);
+        PrescriptionManager prescriptionManager = new PrescriptionManager(appointmentOutcomeFilePath, prescriptionFilePath, appointmentsFilePath, doctorManager, patientManager);
+        userManager userManager = new userManager(userFilePath);
+        medicineManager medicineManager = new medicineManager(medicineFilePath);
+        appointmentOutcomeManager appointmentOutcomeManager = new appointmentOutcomeManager(appointmentOutcomeFilePath, appointmentsFilePath);
+        staffManager staffManager = new staffManager(staffFilePath);
+        patientManager patientManager = new patientManager(patientFilePath, medicalRecordsFilePath, userFilePath);
+        orderRequestManager orderRequestManager = new orderRequestManager(orderRequestFilePath);
+        doctorManager doctorManager = new doctorManager(staffFilePath, patientFilePath, medicalRecordsFilePath, userFilePath);
 
         // User input
         Scanner sc = new Scanner(System.in);

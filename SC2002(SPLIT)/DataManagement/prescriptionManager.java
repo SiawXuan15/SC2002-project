@@ -18,16 +18,18 @@ public class prescriptionManager {
     private final CSVWriter csvWriter;
     private final doctorManager doctorManager;
     private final patientManager patientManager;
+    private final String appointmentOutcomeFilePath; 
 
     // Simplified Constructor
     public prescriptionManager(String prescriptionFilePath, CSVReader csvReader, CSVWriter csvWriter,
-                               doctorManager doctorManager, patientManager patientManager, appointmentsFilePath appointmentsFilePath) {
+                               doctorManager doctorManager, patientManager patientManager, String appointmentsFilePath, String appointmentOutcomeFilePath) {
         this.prescriptionFilePath = prescriptionFilePath;
         this.csvReader = csvReader;
         this.csvWriter = csvWriter;
         this.doctorManager = doctorManager;
         this.patientManager = patientManager;
         this.appointmentsFilePath = appointmentsFilePath;
+        this.appointmentOutcomeFilePath = appointmentOutcomeFilePath; 
     }
 
     public void updatePrescriptionStatus(String appointmentOutcomeFilePath, String appointmentID, String status) throws IOException {
@@ -74,48 +76,49 @@ public class prescriptionManager {
         System.out.println("Prescription added successfully with ID: " + prescriptionID);
     }
 
-    public void dispensePrescription(String appointmentOutcomeFilePath, String appointmentID) throws IOException {
+    public void dispensePrescription(String appointmentID) throws IOException {
         boolean found = false;
-
-        List<String[]> outcomeRecords = CSVReader.readCSV(appointmentOutcomeFilePath);
-
+    
+        List<String[]> outcomeRecords = CSVReader.readCSV(appointmentOutcomeFilePath); // Use the member variable directly
+    
         for (String[] record : outcomeRecords) {
             if (record.length < 7) continue;
-
+    
             if (record[0].equalsIgnoreCase(appointmentID)) {
                 if (!"Pending".equalsIgnoreCase(record[6].trim())) {
                     System.out.println("Prescription for Appointment ID " + appointmentID + " is already dispensed.");
                     return;
                 }
-
+    
                 record[6] = "Dispensed";
                 found = true;
                 break;
             }
         }
-
+    
         if (!found) {
             System.out.println("No pending prescription found for Appointment ID: " + appointmentID);
             return;
         }
-
-        CSVWriter.writeCSV(appointmentOutcomeFilePath, outcomeRecords);
-
+    
+        CSVWriter.writeCSV(appointmentOutcomeFilePath, outcomeRecords); // Write to CSV using the path member variable
+    
         List<String[]> prescriptionRecords = CSVReader.readCSV(prescriptionFilePath);
         boolean prescriptionRemoved = prescriptionRecords.removeIf(record -> {
             if (record.length < 2) return false;
             return record[0].equalsIgnoreCase(appointmentID);
         });
-
+    
         if (!prescriptionRemoved) {
             System.out.println("No prescription found in Prescription.csv for Appointment ID: " + appointmentID);
             return;
         }
-
+    
         CSVWriter.writeCSV(prescriptionFilePath, prescriptionRecords);
-
+    
         System.out.println("Prescription for Appointment ID " + appointmentID + " dispensed and removed successfully.");
     }
+    
 
     public List<String[]> getPendingPrescriptions() throws IOException {
         return CSVReader.readCSV(prescriptionFilePath);
