@@ -9,24 +9,22 @@ import java.util.Scanner;
 public class Pharmacist extends Users implements InventoryMonitor {
     private final appointmentOutcomeManager appointmentOutcomeManager;
     private final prescriptionManager prescriptionManager;
-    private final medicineManager medicineManager; 
-    private final orderRequestManager orderRequestManager; 
+    private final medicineManager medicineManager;
+    private final orderRequestManager orderRequestManager;
     private final userManager userManager;
     private final String userID;
 
     public Pharmacist(String userID, userManager userManager, appointmentOutcomeManager appointmentOutcomeManager,
-    prescriptionManager prescriptionManager, medicineManager medicineManager,
-    orderRequestManager orderRequestManager) throws IOException {
+            prescriptionManager prescriptionManager, medicineManager medicineManager,
+            orderRequestManager orderRequestManager) throws IOException {
         super(userID, userManager);
-        this.userID = userID; 
+        this.userID = userID;
         this.appointmentOutcomeManager = appointmentOutcomeManager;
-        this.prescriptionManager = prescriptionManager;  
+        this.prescriptionManager = prescriptionManager;
         this.userManager = userManager;
         this.medicineManager = medicineManager;
         this.orderRequestManager = orderRequestManager;
     }
-
-    
 
     @Override
     public void displayMenu() {
@@ -43,7 +41,7 @@ public class Pharmacist extends Users implements InventoryMonitor {
             System.out.println("=========================================================");
 
             int choice = sc.nextInt();
-            sc.nextLine(); 
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -79,17 +77,17 @@ public class Pharmacist extends Users implements InventoryMonitor {
                     String medId = sc.nextLine();
                     System.out.print("Enter replenishment quantity: ");
                     int quantity = sc.nextInt();
-                    sc.nextLine(); 
+                    sc.nextLine();
 
                     submitReplenishmentRequest(medId, quantity);
-                   break;
+                    break;
 
-               case 5:
-                   System.out.println("Logging out...");
-                   return;
-               default:
-                   System.out.println("Invalid choice. Please select again.");
-                   break;
+                case 5:
+                    System.out.println("Logging out...");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please select again.");
+                    break;
             }
         }
     }
@@ -145,10 +143,10 @@ public class Pharmacist extends Users implements InventoryMonitor {
             if (currentStock <= lowStockThreshold) {
                 orderRequestManager.addReplenishmentRequest(medID, medicationName, quantity);
                 System.out.println("Replenishment request submitted for " + medicationName +
-                                   " (ID: " + medID + ") with quantity: " + quantity);
+                        " (ID: " + medID + ") with quantity: " + quantity);
             } else {
                 System.out.println("Stock level for " + medicationName +
-                                   " (ID: " + medID + ") is sufficient. Replenishment not required.");
+                        " (ID: " + medID + ") is sufficient. Replenishment not required.");
             }
         } catch (IOException e) {
             System.err.println("Error accessing medication data: " + e.getMessage());
@@ -211,23 +209,23 @@ public class Pharmacist extends Users implements InventoryMonitor {
             System.out.println("Date: " + record[4]);
             System.out.println("Medication Details: " + record[5]);
             System.out.println("Instructions: " + record[6]);
+            System.out.println("Dispensed Quantity: " + record[7]);
             System.out.println("-------------------------");
         }
     }
 
     public void dispensePrescriptionForAppointment() {
         Scanner scanner = new Scanner(System.in);
-    
+
         System.out.println("=== Dispense Prescription ===");
         System.out.print("Enter Appointment ID to dispense prescription: ");
         String appointmentID = scanner.nextLine();
-    
+
         try {
             prescriptionManager.dispensePrescription(appointmentID);
         } catch (IOException e) {
             System.err.println("Error dispensing prescription: " + e.getMessage());
         }
     }
-    
 
 }

@@ -1,4 +1,10 @@
 Medicine ID,Medicine Name,Initial Stock,Low Stock Level Alert,Dosage Information,Expiry Date
+<<<<<<< Updated upstream
 M001,Paracetamol,10,20,500mg,2025-12-31
 M002,Ibuprofen,90,10,200mg,2024-06-30
 M003,Amoxicillin,85,15,250mg,2025-03-15
+=======
+M001,Paracetamol,40,20,500mg,2025-12-31
+M002,Ibuprofen,60,10,200mg,2024-06-30
+M003,Amoxicillin,50,15,250mg,2025-03-15
+>>>>>>> Stashed changes
