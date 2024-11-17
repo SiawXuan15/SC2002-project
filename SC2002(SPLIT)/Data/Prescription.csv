@@ -2,5 +2,3 @@ Prescription ID,Appointment ID,Patient ID,Doctor ID,Date,Medication Details,Inst
 RX002,AP003,P1002,D002,2024-11-16,M003:500mg:20,"Take before sleeping.",0
 RX003,AP004,P1003,D003,2024-11-17,M003:500mg:30,"Take twice daily for 7 days.",0
 RX004,AP005,P1004,D004,2024-11-18,M003:500mg:40,"Take three times a day for 10 days.",0
-
-

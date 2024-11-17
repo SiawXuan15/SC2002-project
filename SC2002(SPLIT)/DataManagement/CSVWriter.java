@@ -21,4 +21,18 @@ public class CSVWriter {
             bw.newLine();
         }
     }
+    public static void writeCSVWithQuotes(String filePath, List<String[]> data) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String[] record : data) {
+                for (int i = 0; i < record.length; i++) {
+                    // Properly quote fields with special characters
+                    if (record[i].contains(",") || record[i].contains(";") || record[i].contains("\"")) {
+                        record[i] = "\"" + record[i].replace("\"", "\"\"") + "\"";
+                    }
+                }
+                bw.write(String.join(",", record));
+                bw.newLine();
+            }
+        }
+}
 }

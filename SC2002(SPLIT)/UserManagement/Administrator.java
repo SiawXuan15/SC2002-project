@@ -183,13 +183,17 @@ private void displayStaffList(List<String[]> staffList) {
         System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
                 "StaffID", "UserID", "Name", "Role", "Gender", "Age", "Specialization", "Contact");
         System.out.println("=============================================================================================================");
-
-        for (String[] staff : staffList) {
+ 
+ 
+        //for (String[] staff : staffList) {
+     for (int i = 1; i < staffList.size(); i++) {
+         String[] staff = staffList.get(i);
             System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
                     staff[0], staff[1], staff[2], staff[3], staff[4], staff[5], staff[6], staff[7]);
         }
     }
-}
+ }
+ 
 
 private void displayFilteredStaff(List<String[]> filteredStaff) {
     if (filteredStaff == null || filteredStaff.isEmpty()) {

@@ -1,4 +1,3 @@
-
 package DataManagement;
 
 
@@ -186,9 +185,11 @@ public class patientManager {
     // }
 
 
-    public void updatePatientData(String userID, String name, String email,
-            String contact,
-            String gender, String dob, String paymentMethod) throws IOException {
+    public boolean updatePatientData(String userID, String name, String email,
+            String contact, String gender, String dob, String paymentMethod) throws IOException {
+        boolean updated = false;
+
+
         // Update User_List.csv
         List<String[]> users = CSVReader.readCSV(userFilePath);
         for (String[] user : users) {
@@ -199,55 +200,70 @@ public class patientManager {
                     user[4] = email; // Update email
                 if (contact != null)
                     user[5] = contact; // Update contact number
+                updated = true;
                 break;
             }
         }
-        CSVWriter.writeCSV(userFilePath, users); // Write back updated data
+        if (updated)
+            CSVWriter.writeCSV(userFilePath, users);
 
 
         // Update Patient_List.csv
+        updated = false; // Reset flag for next update
         List<String[]> patients = CSVReader.readCSV(patientFilePath);
         for (String[] patient : patients) {
             if (patient[1].equalsIgnoreCase(userID)) { // Match by User ID
                 if (name != null)
-                    patient[3] = name; // Update name
+                    patient[3] = name;
                 if (dob != null)
-                    patient[4] = dob; // Update date of birth
+                    patient[4] = dob;
                 if (gender != null)
-                    patient[5] = gender; // Update gender
+                    patient[5] = gender;
                 if (contact != null)
-                    patient[7] = contact; // Update contact number
+                    patient[7] = contact;
                 if (email != null)
-                    patient[8] = email; // Update email address
+                    patient[8] = email;
                 if (paymentMethod != null)
-                    patient[9] = paymentMethod; // Update payment method
+                    patient[9] = paymentMethod;
+                updated = true;
                 break;
             }
         }
-        CSVWriter.writeCSV(patientFilePath, patients); // Write back updated data
+        if (updated)
+            CSVWriter.writeCSV(patientFilePath, patients);
 
 
         // Update MedicalRecords.csv
+        updated = false; // Reset flag for next update
         List<String[]> medicalRecords = CSVReader.readCSV(medicalRecordsFilePath);
         for (String[] record : medicalRecords) {
             if (record[2].equalsIgnoreCase(userID)) { // Match by User ID
                 if (name != null)
-                    record[3] = name; // Update name
+                    record[3] = name;
                 if (dob != null)
-                    record[4] = dob; // Update date of birth
+                    record[4] = dob;
                 if (gender != null)
-                    record[5] = gender; // Update gender
+                    record[5] = gender;
                 if (contact != null)
-                    record[6] = contact; // Update contact number
+                    record[6] = contact;
                 if (email != null)
-                    record[7] = email; // Update email address
+                    record[7] = email;
+                updated = true;
                 break;
             }
         }
-        CSVWriter.writeCSV(medicalRecordsFilePath, medicalRecords); // Write back
+        if (updated)
+            CSVWriter.writeCSV(medicalRecordsFilePath, medicalRecords);
 
 
-        System.out.println("Patient data updated successfully across all records.");
+        return updated;
+    }
+
+
+    public void reloadPatientData() throws IOException {
+        // Reload patients list from CSV
+        List<String[]> patients = CSVReader.readCSV(patientFilePath);
+        System.out.println("Reloaded patient data: " + patients.size() + " entries found.");
     }
 
 

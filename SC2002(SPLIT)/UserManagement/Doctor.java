@@ -66,19 +66,8 @@ public class Doctor extends Users {
                     viewAllMedicalRecords();
                     break;
                 case 2:
-                    System.out.println("Enter patient ID to update medical record:");
-                    String patientId = scanner.next();
-                    Patient patient = findPatientById(patientId);
-                    if (patient != null) {
-                        System.out.println("Enter diagnosis:");
-                        String diagnosis = scanner.next();
-                        System.out.println("Enter treatment:");
-                        String treatment = scanner.next();
+                    updatePatientMedicalRecord();
 
-
-                    } else {
-                        System.out.println("Patient not found.");
-                    }
                     break;
                 case 3:
                     viewSchedule();
@@ -421,15 +410,18 @@ public class Doctor extends Users {
                 System.out.println("Date of Birth: " + record[4]);
                 System.out.println("Gender: " + record[5]);
                 System.out.println("Contact Information: " + record[6]);
-                System.out.println("Blood Type: " + record[7]);
-                System.out.println("Past Diagnoses and Treatments: " + record[8]);
-                System.out.println("Doctor ID: " + record[9]);
+                System.out.println("Email: " + record[7]);
+                System.out.println("Blood Type: " + record[8]);
+                System.out.println("Past Diagnoses and Treatments: " + record[9]);
+                System.out.println("Doctor ID: " + record[10]);
                 System.out.println("--------------------------------------");
             }
         } catch (IOException e) {
             System.err.println("Error retrieving medical records: " + e.getMessage());
         }
     }
+
+
 
 
     public void scheduleFollowUp() {
@@ -507,6 +499,76 @@ public class Doctor extends Users {
             System.out.println("Error scheduling follow-up appointment: " + e.getMessage());
         }
     }
+
+
+private void updatePatientMedicalRecord() {
+    Scanner scanner = new Scanner(System.in);
+
+
+    System.out.println("Enter patient ID to update medical record:");
+    String patientId = scanner.nextLine().trim();
+
+
+    try {
+        // Fetch the patient's medical record
+        String[] medicalRecord = medicalRecordManager.getMedicalRecordByPatientID(patientId);
+
+
+        if (medicalRecord != null) {
+            // Prompt doctor for new diagnosis and treatment
+            System.out.println("\nEnter new diagnosis:");
+            String newDiagnosis = scanner.nextLine().trim();
+            System.out.println("Enter new treatment:");
+            String newTreatment = scanner.nextLine().trim();
+
+
+            // Update the medical record
+            medicalRecordManager.updateMedicalRecord(patientId, newDiagnosis, newTreatment);
+
+
+            // Fetch the updated medical record
+            String[] updatedMedicalRecord = medicalRecordManager.getMedicalRecordByPatientID(patientId);
+
+
+            // Print the updated medical record summary
+            System.out.println("\n=== Updated Medical Record Summary ===");
+            printMedicalRecordSummary(updatedMedicalRecord);
+
+
+            System.out.println("\nMedical record updated successfully.");
+        } else {
+            System.out.println("Patient not found or no medical record exists.");
+        }
+    } catch (IOException e) {
+        System.out.println("Error updating medical record: " + e.getMessage());
+    }
+}
+
+private void printMedicalRecordSummary(String[] medicalRecord) {
+
+
+    System.out.println("Record ID: " + medicalRecord[0]);
+    System.out.println("Patient ID: " + medicalRecord[1]);
+    System.out.println("User ID: " + medicalRecord[2]);
+    System.out.println("Name: " + medicalRecord[3]);
+    System.out.println("Date of Birth: " + medicalRecord[4]);
+    System.out.println("Gender: " + medicalRecord[5]);
+    System.out.println("Contact Information: " + medicalRecord[6]);
+    System.out.println("Email: " + medicalRecord[7]);
+    System.out.println("Blood Type: " + medicalRecord[8]);
+
+
+    System.out.println("Past Diagnoses and Treatments:");
+    String[] historyEntries = medicalRecord[9].split(";");
+    for (String entry : historyEntries) {
+        System.out.println("  - " + entry.trim());
+    }
+
+
+    System.out.println("Doctor ID: " + medicalRecord[10]);
+}
+
+
 }
 
 

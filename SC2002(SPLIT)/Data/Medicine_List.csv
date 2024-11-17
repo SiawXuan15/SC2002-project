@@ -1,6 +1,4 @@
 Medicine ID,Medicine Name,Initial Stock,Low Stock Level Alert,Dosage Information,Expiry Date
-M001,Paracetamol,100,50,500mg,2025-12-31
-M002,Ibuprofen,45,10,200mg,2024-06-30
-M003,Amoxicillin,50,15,250mg,2025-03-15
-
-
+M001,Paracetamol,70,50,500mg,2025-12-31
+M002,Ibuprofen,35,10,200mg,2024-06-30
+M003,Amoxicillin,10,40,250mg,2025-03-15

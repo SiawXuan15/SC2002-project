@@ -1,6 +1,7 @@
 package DataManagement;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class medicalRecordManager {
@@ -88,5 +89,26 @@ public class medicalRecordManager {
             System.out.println("Medical record with Record ID " + recordID + " not found.");
         }
     }
+
+    public void updateMedicalRecord(String patientId, String newDiagnosis, String newTreatment) throws IOException {
+        List<String[]> medicalRecords = CSVReader.readCSVwithQuotes(medicalRecordsFilePath);
+
+
+        for (String[] record : medicalRecords) {
+            if (record[1].equals(patientId)) { // Match by Patient ID
+                String updatedDiagnoses = record[9].trim();
+                if (!updatedDiagnoses.endsWith(";") && !updatedDiagnoses.isEmpty()) {
+                    updatedDiagnoses += ";"; // Ensure separation with a semicolon
+                }
+                updatedDiagnoses += " " + newDiagnosis + ": " + newTreatment + " (" + LocalDate.now() + ")";
+                record[9] = updatedDiagnoses.trim();
+                break;
+            }
+        }
+
+
+        CSVWriter.writeCSVWithQuotes(medicalRecordsFilePath, medicalRecords);
+    }
+
 
 }

@@ -18,4 +18,20 @@ public class CSVReader {
         }
         return records;
     }
+    public static List<String[]> readCSVwithQuotes(String filePath) throws IOException {
+        List<String[]> records = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Split respecting quoted fields
+                String[] fields = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = fields[i].replaceAll("^\"|\"$", "").trim(); // Remove enclosing quotes
+                }
+                records.add(fields);
+            }
+        }
+        return records;
+    }
+
 }

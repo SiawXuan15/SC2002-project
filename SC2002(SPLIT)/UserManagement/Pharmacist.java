@@ -106,7 +106,9 @@ public class Pharmacist extends Users implements InventoryMonitor {
     public void viewAppointmentOutcomeRecord() {
         try {
             List<String[]> records = appointmentOutcomeManager.getAllAppointmentOutcomeRecords();
-            for (String[] record : records) {
+            //for (String[] record : records) {
+         for (int i = 1; i < records.size(); i++) {
+         String[] record = records.get(i);
                 String appointmentId = record[0];
                 String patientId = record[1];
                 String doctorId = record[2];
@@ -115,8 +117,10 @@ public class Pharmacist extends Users implements InventoryMonitor {
                 String medicationName = record[5];
                 String medicationStatus = record[6];
                 String consultationNotes = record[7];
-
-
+ 
+ 
+ 
+ 
                 System.out.println("Appointment ID: " + appointmentId);
                 System.out.println("Patient ID: " + patientId);
                 System.out.println("Doctor ID: " + doctorId);
@@ -127,12 +131,16 @@ public class Pharmacist extends Users implements InventoryMonitor {
                 System.out.println("Consultation Notes: " + consultationNotes);
                 System.out.println("--------------------------------------");
             }
-
-
+ 
+ 
+ 
+ 
         } catch (IOException e) {
             System.err.println("Error accessing appointment outcome records: " + e.getMessage());
         }
     }
+ 
+ 
 
 
     /**
