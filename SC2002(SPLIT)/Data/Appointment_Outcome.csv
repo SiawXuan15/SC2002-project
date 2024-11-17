@@ -1,6 +1,6 @@
 Appointment ID,Patient ID,Doctor ID,Date Of Appointment,Type Of Service,Prescription Name,Prescription Status,Consultation Notes
-AP001,P1001,D001,2024-11-15,Consultation,Paracetamol,Dispensed,General checkup and pain management
-AP002,P1001,D001,2024-11-15,Consultation,Ibuprofen,Pending,General checkup and pain management
+AP001,P1001,D001,2024-11-15,Consultation,Paracetamol,Pending,General checkup and pain management
+AP002,P1001,D001,2024-11-15,Consultation,Ibuprofen,Dispensed,General checkup and pain management
 AP003,P1002,D002,2024-11-16,X-ray,Amoxicillin,Pending,Suspected fracture in the left arm
 AP004,P1003,D003,2024-11-17,Blood Test,Amoxicillin,Pending,Routine blood work to monitor cholesterol levels
 AP005,P1004,D004,2024-11-18,Consultation,Amoxicillin,Pending,Follow-up consultation for respiratory infection

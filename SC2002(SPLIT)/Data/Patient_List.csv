@@ -1,3 +1,7 @@
 Patient ID,User ID,Doctor ID,Name,Date of Birth,Gender,Blood Type,Contact Number,Email Address,Payment method
 P1001,P1001,D001,Alice,1991-07-08,Female,A+,84840686,alice123@example.com,Cash
 P1002,P1002,D001,Bob Stone,1975-11-22,Male,B+,99876543,bob.stone@example.com,Bank Transfer
+<<<<<<< Updated upstream
+=======
+P1003,P1003,D001,Katie Wong,1990-07-08,female,O-,83342533,katie.wong@example.com,cash
+>>>>>>> Stashed changes
