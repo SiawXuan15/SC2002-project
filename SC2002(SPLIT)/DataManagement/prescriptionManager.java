@@ -10,9 +10,7 @@ public class prescriptionManager {
     private final String appointmentsFilePath; 
     private final String appointmentOutcomeFilePath; 
     private final appointmentManager appointmentManager;
-    //private final userManager userManager; 
 
-    // Updated Constructor with Minimal Dependencies
     public prescriptionManager(
             String prescriptionFilePath,
             String appointmentsFilePath,
@@ -38,7 +36,7 @@ public class prescriptionManager {
                 if (record[6].equalsIgnoreCase("Dispensed") && status.equalsIgnoreCase("Dispensed")) {
                     System.out.println("Prescription is already dispensed.");
                 } else {
-                    record[6] = status; // Update status to the specified status
+                    record[6] = status; 
                     updated = true;
                 }
             }
@@ -49,7 +47,6 @@ public class prescriptionManager {
             return;
         }
 
-        // Write updated records back to the CSV file
         CSVWriter.writeCSV(appointmentOutcomeFilePath, records);
         System.out.println("Prescription status updated successfully.");
     }
@@ -57,17 +54,14 @@ public class prescriptionManager {
     public void addPrescriptionToCSV(String patientID, String doctorID, String date, String medicationDetails, String instructions) throws IOException {
         List<String[]> prescriptions = CSVReader.readCSV(prescriptionFilePath);
 
-        // Generate the next Prescription ID
         String lastPrescriptionID = prescriptions.isEmpty() ? "RX000" : prescriptions.get(prescriptions.size() - 1)[0];
         int nextID = Integer.parseInt(lastPrescriptionID.substring(2)) + 1;
         String prescriptionID = String.format("RX%03d", nextID);
 
-        // Ensure instructions are quoted for consistent formatting
         instructions = "\"" + instructions + "\"";
 
         String[] prescriptionRecord = {prescriptionID, patientID, doctorID, date, medicationDetails, instructions};
 
-        // Append the new record to the CSV file
         CSVWriter.appendToCSV(prescriptionFilePath, prescriptionRecord);
 
         System.out.println("Prescription added successfully with ID: " + prescriptionID);
@@ -76,7 +70,7 @@ public class prescriptionManager {
     public void dispensePrescription(String appointmentID) throws IOException {
         boolean found = false;
     
-        List<String[]> outcomeRecords = CSVReader.readCSV(appointmentOutcomeFilePath); // Use the member variable directly
+        List<String[]> outcomeRecords = CSVReader.readCSV(appointmentOutcomeFilePath); 
     
         for (String[] record : outcomeRecords) {
             if (record.length < 7) continue;
@@ -98,7 +92,7 @@ public class prescriptionManager {
             return;
         }
     
-        CSVWriter.writeCSV(appointmentOutcomeFilePath, outcomeRecords); // Write to CSV using the path member variable
+        CSVWriter.writeCSV(appointmentOutcomeFilePath, outcomeRecords); 
     
         List<String[]> prescriptionRecords = CSVReader.readCSV(prescriptionFilePath);
         boolean prescriptionRemoved = prescriptionRecords.removeIf(record -> {
@@ -171,13 +165,10 @@ public class prescriptionManager {
 
     public Map<String, String> getAppointmentDetailsByUserID(String userID) {
     try {
-        // Read all appointment records from appointments.csv
         List<String[]> appointments = CSVReader.readCSV(appointmentsFilePath);
 
         for (String[] record : appointments) {
-            // Check if the userID matches either the patientID or doctorID in the appointment record
             if (record[1].equalsIgnoreCase(userID) || record[2].equalsIgnoreCase(userID)) {
-                // Create a map to store appointment details
                 Map<String, String> appointmentDetails = new HashMap<>();
                 appointmentDetails.put("AppointmentID", record[0]);
                 appointmentDetails.put("PatientID", record[1]);
@@ -186,7 +177,7 @@ public class prescriptionManager {
                 appointmentDetails.put("Time", record[4]);
                 appointmentDetails.put("Status", record[5]);
 
-                return appointmentDetails; // Return the matching appointment details
+                return appointmentDetails; 
             }
         }
 
@@ -194,56 +185,7 @@ public class prescriptionManager {
         System.err.println("Error reading appointments: " + e.getMessage());
     }
     
-    return null; // Return null if no match is found
+    return null; 
 }
-
-
-    // public Appointment getAppointmentByID(String appointmentID) {
-    //     try {
-    //         List<String[]> appointments = CSVReader.readCSV(appointmentsFilePath); // Read the appointments.csv
-    //         for (String[] record : appointments) {
-    //             if (record[0].equals(appointmentID)) { // Match the Appointment ID
-    //                 // Retrieve Patient and Doctor objects using their IDs
-    //                 // Patient patient = new Patient(record[1], this); 
-    //                 // Doctor doctor = new Doctor(record[2], this);    
-    //                 Patient patient = new Patient(
-    //                     record[1], 
-    //                     userManager, 
-    //                     patientManager, 
-    //                     staffManager, 
-    //                     appointmentManager, 
-    //                     medicalRecordManager, 
-    //                     prescriptionManager, 
-    //                     doctorManager, 
-    //                     appointmentOutcomeManager
-    //                 );
-    
-    //                 Doctor doctor = new Doctor(
-    //                     record[2], 
-    //                     appointmentManager, 
-    //                     appointmentOutcomeManager, 
-    //                     medicalRecordManager, 
-    //                     prescriptionManager, 
-    //                     userManager
-    //                 );
-    
-    //             // Parse the Date and Time
-    
-    //                 // Parse the Date and Time
-    //                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(record[3]);
-    //                 String time = record[4];
-    
-    //                 // Create a new Appointment object
-    //                 Appointment appointment = new Appointment(patient, doctor, date, time);
-    //                 appointment.setStatus(record[5]); // Set the status if it's different from the default
-    
-    //                 return appointment; // Return the matching Appointment object
-    //             }
-    //         }
-    //     } catch (IOException | ParseException e) {
-    //         System.err.println("Error retrieving appointment: " + e.getMessage());
-    //     }
-    //     return null; // Return null if no match is found
-    // }
     
 }

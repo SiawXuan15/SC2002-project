@@ -10,24 +10,21 @@ public class medicineManager {
 
     private final String medicineFilePath;
 
-    // Constructor
     public medicineManager(String medicineFilePath) {
         this.medicineFilePath = medicineFilePath;
     }
 
-    // Fetch all medications from the CSV file
     public List<String[]> getMedicineList() throws IOException {
         return CSVReader.readCSV(medicineFilePath);
     }
 
-    // Fetch medications below the low-stock level
     public List<String[]> getLowStockMedications() throws IOException {
         List<String[]> medicines = getMedicineList();
         List<String[]> lowStock = new ArrayList<>();
 
         for (String[] medicine : medicines) {
-            int currentStock = Integer.parseInt(medicine[2]); // Index 2: Initial Stock
-            int lowStockAlert = Integer.parseInt(medicine[3]); // Index 3: Low Stock Level Alert
+            int currentStock = Integer.parseInt(medicine[2]); 
+            int lowStockAlert = Integer.parseInt(medicine[3]); 
 
             if (currentStock <= lowStockAlert) {
                 lowStock.add(medicine);
@@ -37,13 +34,12 @@ public class medicineManager {
         return lowStock;
     }
 
-    // Update the low stock level alert threshold for a medication
     public void updateLowStockLevel(String medID, int newLowStockLevel) throws IOException {
         List<String[]> medicines = getMedicineList();
 
         for (String[] medicine : medicines) {
             if (medicine[0].equalsIgnoreCase(medID)) {
-                medicine[3] = String.valueOf(newLowStockLevel); // Update the low stock level alert
+                medicine[3] = String.valueOf(newLowStockLevel); 
                 System.out.println("Low Stock Level Alert updated for Medication ID: " + medID);
             }
         }
@@ -51,17 +47,15 @@ public class medicineManager {
         CSVWriter.writeCSV(medicineFilePath, medicines);
     }
 
-    // Add new medication to the CSV
     public void addMedicine(String[] newMedicine) throws IOException {
         CSVWriter.appendToCSV(medicineFilePath, newMedicine);
     }
 
-    // Update the entire medicine list in the CSV file
     public void updateMedicineList(List<String[]> updatedMedicine) throws IOException {
         CSVWriter.writeCSV(medicineFilePath, updatedMedicine);
     }
 
-    // Update the stock level of a medication
+   
     public void updateMedicationStock(String medID, int quantity) throws IOException {
         List<String[]> medicines = getMedicineList();
         boolean updated = false;
@@ -69,7 +63,7 @@ public class medicineManager {
         for (String[] med : medicines) {
             if (med[0].equalsIgnoreCase(medID)) {
                 int currentStock = Integer.parseInt(med[2]);
-                med[2] = String.valueOf(currentStock + quantity); // Update stock level
+                med[2] = String.valueOf(currentStock + quantity); 
                 updated = true;
                 break;
             }
@@ -83,7 +77,6 @@ public class medicineManager {
         }
     }
 
-    // Fetch a specific field of a medication by MedID
     public String getMedicationField(String medID, String fieldName) throws IOException {
         List<String[]> medicines = getMedicineList();
 
@@ -105,13 +98,12 @@ public class medicineManager {
         return null;
     }
 
-    // Retrieve medication details by MedID
     public String[] getMedicationDetails(String medID) throws IOException {
         List<String[]> medicines = getMedicineList();
 
         for (String[] med : medicines) {
             if (med[0].equalsIgnoreCase(medID)) {
-                return med; // Return the entire medication record
+                return med; 
             }
         }
 
@@ -119,7 +111,6 @@ public class medicineManager {
         return null;
     }
 
-    // Remove a specific quantity of stock for a medication
     public void removeStockLevel(String medID, int removeQuantity) throws IOException {
         List<String[]> medicines = getMedicineList();
         boolean found = false;
@@ -145,7 +136,6 @@ public class medicineManager {
         System.out.println("Stock level updated successfully for Medication ID: " + medID);
     }
 
-    // Add a specific quantity of stock for a medication
     public void addStockLevels(String medID, int addQuantity) throws IOException {
         updateMedicationStock(medID, addQuantity);
     }

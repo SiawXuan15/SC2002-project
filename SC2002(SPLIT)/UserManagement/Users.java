@@ -1,8 +1,6 @@
 package UserManagement;
 
-//import DataManagement.CSVDatabaseManager;
 import DataManagement.userManager;
-
 import java.io.IOException;
 
 public abstract class Users {
@@ -29,7 +27,7 @@ public abstract class Users {
 
     public void changePassword(String newPassword) {
         this.password = newPassword;
-    } //edit this 
+    } 
 
 
     public void updateContactDetails(String email, int contactNumber) {

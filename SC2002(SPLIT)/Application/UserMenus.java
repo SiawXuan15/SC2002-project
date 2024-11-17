@@ -7,7 +7,6 @@ import java.util.*;
 
 public class UserMenus {
     public static void main(String args[]) throws IOException {
-        // File paths for CSV files
         String staffFilePath = "SC2002(SPLIT)/Data/Staff_List.csv";
         String medicineFilePath = "SC2002(SPLIT)/Data/Medicine_List.csv";
         String patientFilePath = "SC2002(SPLIT)/Data/Patient_List.csv";
@@ -19,11 +18,9 @@ public class UserMenus {
         String prescriptionFilePath = "SC2002(SPLIT)/Data/Prescription.csv";
     
 
-        // Initialize CSVReader and CSVWriter
         CSVReader csvReader = new CSVReader();
         CSVWriter csvWriter = new CSVWriter();
 
-        // Initialize the separate manager classes
         appointmentManager appointmentManager = new appointmentManager(appointmentsFilePath);
         medicalRecordManager medicalRecordManager = new medicalRecordManager(medicalRecordsFilePath);
         prescriptionManager prescriptionManager = new prescriptionManager(
@@ -40,7 +37,6 @@ public class UserMenus {
         orderRequestManager orderRequestManager = new orderRequestManager(orderRequestFilePath);
         doctorManager doctorManager = new doctorManager(staffFilePath, patientFilePath, medicalRecordsFilePath, userFilePath);
 
-        // User input
         Scanner sc = new Scanner(System.in);
         String userID;
         String password;
@@ -52,7 +48,6 @@ public class UserMenus {
         System.out.print("Please enter your password: ");
         password = sc.nextLine();
 
-        // User login validation
         boolean isAuthenticated = userManager.login(userID, password);
         while (!isAuthenticated) {
             System.out.println("Invalid login credentials, please try again");
@@ -63,7 +58,6 @@ public class UserMenus {
             isAuthenticated = userManager.login(userID, password);
         }
 
-        // Check if it's the user's first login and prompt to change password
         if (password.equals("password")) {
             System.out.println("This is your first log in. Would you like to change your password? (Yes/No)");
             String pwChange = sc.nextLine().trim();
@@ -82,7 +76,6 @@ public class UserMenus {
             }
         }
 
-        // Determine the user's role and display the appropriate menu
         String role = userManager.getRoleByUserID(userID);
         switch (role) {
             case "Patient":
@@ -98,7 +91,6 @@ public class UserMenus {
                 break;
 
                 case "Pharmacist":
-                // Instantiate a Pharmacist using the correct parameter types
                 Users existingPharmacist = new Pharmacist(userID, userManager, appointmentOutcomeManager, prescriptionManager, medicineManager, orderRequestManager);
                 System.out.println("Welcome to HMS, Pharmacist " + existingPharmacist.getName());
                 existingPharmacist.displayMenu();

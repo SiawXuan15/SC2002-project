@@ -17,14 +17,14 @@ public class Pharmacist extends Users implements InventoryMonitor {
     public Pharmacist(String userID, userManager userManager, appointmentOutcomeManager appointmentOutcomeManager,
     prescriptionManager prescriptionManager, medicineManager medicineManager,
     orderRequestManager orderRequestManager) throws IOException {
-super(userID, userManager);
-this.userID = userID; 
-this.appointmentOutcomeManager = appointmentOutcomeManager;
-this.prescriptionManager = prescriptionManager;  // Note the corrected type
-this.userManager = userManager;
-this.medicineManager = medicineManager;
-this.orderRequestManager = orderRequestManager;
-}
+        super(userID, userManager);
+        this.userID = userID; 
+        this.appointmentOutcomeManager = appointmentOutcomeManager;
+        this.prescriptionManager = prescriptionManager;  
+        this.userManager = userManager;
+        this.medicineManager = medicineManager;
+        this.orderRequestManager = orderRequestManager;
+    }
 
     
 
@@ -81,7 +81,7 @@ this.orderRequestManager = orderRequestManager;
                     int quantity = sc.nextInt();
                     sc.nextLine(); 
 
-                    submitReplenishmentRequest(medId, quantity); // Submit replenishment request by ID
+                    submitReplenishmentRequest(medId, quantity);
                    break;
 
                case 5:
@@ -131,21 +131,17 @@ this.orderRequestManager = orderRequestManager;
         }
 
         try {
-            // Retrieve medication details from the inventory manager
             String[] medicationDetails = medicineManager.getMedicationDetails(medID);
 
-            // Validate MedID
             if (medicationDetails == null) {
                 System.out.println("Medication with ID " + medID + " not found.");
                 return;
             }
 
-            // Extract details
             String medicationName = medicationDetails[1].trim(); // Medication Name
             int currentStock = Integer.parseInt(medicationDetails[2].trim()); // Current Stock
             int lowStockThreshold = Integer.parseInt(medicationDetails[3].trim()); // Low Stock Threshold
 
-            // Check if stock level is below the threshold
             if (currentStock <= lowStockThreshold) {
                 orderRequestManager.addReplenishmentRequest(medID, medicationName, quantity);
                 System.out.println("Replenishment request submitted for " + medicationName +
@@ -231,13 +227,4 @@ this.orderRequestManager = orderRequestManager;
     }
     
 
-    // @Override
-    // public String getName() {
-    //     try {
-    //         return userManager.getUserName(this.getUserID());
-    //     } catch (IOException e) {
-    //         System.err.println("Error fetching pharmacist name: " + e.getMessage());
-    //         return null;
-    //     }
-    // }
 }

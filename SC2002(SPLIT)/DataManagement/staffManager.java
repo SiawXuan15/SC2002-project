@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class staffManager {
     private final String staffFilePath;
 
-    // Constructor
     public staffManager(String staffFilePath) {
         this.staffFilePath = staffFilePath;
     }
@@ -16,31 +15,29 @@ public class staffManager {
     public String[] getStaffByUserID(String userID) throws IOException {
         List<String[]> staffList = CSVReader.readCSV(staffFilePath);
         for (String[] staff : staffList) {
-            if (staff[1].equals(userID)) { // Assuming UserID is at index 1
+            if (staff[1].equals(userID)) { 
                 return staff;
             }
         }
-        return null; // Staff not found
+        return null;
     }
 
-    // Method to generate the next Staff ID
     private String generateNextStaffID(List<String[]> staffList) {
         int maxID = 0;
         for (String[] staff : staffList) {
-            String staffID = staff[0]; // Assuming Staff ID is at index 0
+            String staffID = staff[0]; 
             if (staffID.startsWith("S")) {
                 try {
-                    int idNumber = Integer.parseInt(staffID.substring(1)); // Extract numeric part
-                    maxID = Math.max(maxID, idNumber); // Keep track of the largest ID
+                    int idNumber = Integer.parseInt(staffID.substring(1)); 
+                    maxID = Math.max(maxID, idNumber); 
                 } catch (NumberFormatException e) {
-                    // Ignore any invalid ID formats
+                    
                 }
             }
         }
-        return "S" + String.format("%03d", maxID + 1); // Generate next ID (e.g., S005)
+        return "S" + String.format("%03d", maxID + 1); 
     }
 
-    // Helper function to generate UserID
     private String generateUserID(String rolePrefix, String filePath) throws IOException {
         List<String[]> records = CSVReader.readCSV(filePath);
         int maxNumber = 0;
@@ -50,7 +47,6 @@ public class staffManager {
                     int num = Integer.parseInt(record[1].substring(rolePrefix.length()));
                     maxNumber = Math.max(maxNumber, num);
                 } catch (NumberFormatException ignored) {
-                    // Ignore invalid IDs
                 }
             }
         }
@@ -66,7 +62,7 @@ public class staffManager {
             case "pharmacist":
                 return "P";
             default:
-                return "U"; // Default prefix for unrecognized roles
+                return "U"; 
         }
     }
 
@@ -78,41 +74,36 @@ public class staffManager {
         Scanner sc = new Scanner(System.in);
         List<String[]> staffList = getStaffList();
 
-        // Generate the next Staff ID
         String nextStaffID = generateNextStaffID(staffList);
 
         System.out.println("Enter details for new staff.");
 
-        // Input Name
         System.out.print("Name: ");
         String name = sc.nextLine();
 
-        // Input Role
         System.out.print("Role: ");
-        String role = sc.nextLine().trim().toLowerCase(); // Normalize input to lowercase
+        String role = sc.nextLine().trim().toLowerCase(); 
         while (!role.equals("doctor") && !role.equals("patient") 
                 && !role.equals("administrator") && !role.equals("pharmacist")) {
             System.out.print("Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacists: ");
-            role = sc.nextLine().trim().toLowerCase(); // Re-prompt and normalize input
+            role = sc.nextLine().trim().toLowerCase(); 
         }
         String rolePrefix = getRolePrefix(role);
         String userID = generateUserID(rolePrefix, staffFilePath);
         System.out.println("Generated User ID: " + userID);
 
-        // Input and validate Gender
         String gender;
         while (true) {
             System.out.print("Gender: ");
             gender = sc.nextLine();
             if (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female")) {
-                gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase(); // Capitalize
+                gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase(); 
                 break;
             } else {
                 System.out.println("Invalid Gender. Please enter Male or Female.");
             }
         }
 
-        // Input and validate Age
         String age;
         while (true) {
             System.out.print("Age: ");
@@ -129,11 +120,9 @@ public class staffManager {
             }
         }
 
-        // Input Specialization
         System.out.print("Specialization: ");
         String specialization = sc.nextLine();
 
-        // Input and validate Contact
         String contact;
         while (true) {
             System.out.print("Contact (8 digits, starts with 8 or 9): ");
@@ -145,19 +134,17 @@ public class staffManager {
             }
         }
 
-        // Input and validate Email
         String email;
         while (true) {
             System.out.print("Email: ");
             email = sc.nextLine();
-            if (email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) { // Basic email validation regex
+            if (email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) { 
                 break;
             } else {
                 System.out.println("Invalid Email. Please enter a valid email address.");
             }
         }
 
-        // Define newStaff array with email at the last index
         String[] newStaff = {nextStaffID, userID, name, role, gender, age, specialization, contact, email};
 
         try {
@@ -169,17 +156,15 @@ public class staffManager {
     }
 
     public boolean removeStaff(String userID) throws IOException {
-        List<String[]> staffList = getStaffList(); // Get the current list of staff
+        List<String[]> staffList = getStaffList(); 
 
-        // Try to remove the staff with the given userID
-        boolean removed = staffList.removeIf(staff -> staff[1].equals(userID)); // Assuming UserID is at index 1
+        boolean removed = staffList.removeIf(staff -> staff[1].equals(userID)); 
 
         if (removed) {
-            // Update the CSV file to reflect the removal
-            updateStaffList(staffList); // This method should write the updated list back to the CSV
+            updateStaffList(staffList); 
         }
 
-        return removed; // Return true if removal was successful, otherwise false
+        return removed; 
     }
 
     public void updateStaffList(List<String[]> updatedStaff) throws IOException {
@@ -192,15 +177,15 @@ public class staffManager {
 
         for (int i = 0; i < staffList.size(); i++) {
             String[] staff = staffList.get(i);
-            if (staff[1].equals(userID)) { // Assuming UserID is at index 1
-                staffList.set(i, updatedStaff); // Replace the old data with updated data
+            if (staff[1].equals(userID)) { 
+                staffList.set(i, updatedStaff); 
                 found = true;
                 break;
             }
         }
 
         if (found) {
-            updateStaffList(staffList); // Write the updated list back to the CSV
+            updateStaffList(staffList);
         } else {
             System.out.println("Staff with UserID " + userID + " not found.");
         }
@@ -210,22 +195,21 @@ public class staffManager {
         List<String[]> staffList = getStaffList();
         List<String[]> filteredList = new ArrayList<>();
 
-        // Assuming the indexes are:
-        // Index 2: Role, Index 3: Gender, Index 4: Age
+
         for (String[] staff : staffList) {
             switch (criterion.toLowerCase()) {
                 case "role":
-                    if (staff[3].equalsIgnoreCase(value)) { // Assuming Role is at index 3
+                    if (staff[3].equalsIgnoreCase(value)) { 
                         filteredList.add(staff);
                     }
                     break;
                 case "gender":
-                    if (staff[4].equalsIgnoreCase(value)) { // Assuming Gender is at index 4
+                    if (staff[4].equalsIgnoreCase(value)) { 
                         filteredList.add(staff);
                     }
                     break;
                 case "age":
-                    if (staff[5].equals(value)) { // Assuming Age is at index 5
+                    if (staff[5].equals(value)) { 
                         filteredList.add(staff);
                     }
                     break;
@@ -238,9 +222,9 @@ public class staffManager {
         List<String[]> filteredList = new ArrayList<>();
 
         for (String[] staff : staffList) {
-            boolean matchesRole = (role == null || role.isEmpty() || staff[3].equalsIgnoreCase(role)); // Assuming Role is at index 3
-            boolean matchesGender = (gender == null || gender.isEmpty() || staff[4].equalsIgnoreCase(gender)); // Assuming Gender is at index 4
-            boolean matchesAge = (age == null || age.isEmpty() || staff[5].equals(age)); // Assuming Age is at index 5
+            boolean matchesRole = (role == null || role.isEmpty() || staff[3].equalsIgnoreCase(role)); 
+            boolean matchesGender = (gender == null || gender.isEmpty() || staff[4].equalsIgnoreCase(gender)); 
+            boolean matchesAge = (age == null || age.isEmpty() || staff[5].equals(age)); 
 
             if (matchesRole && matchesGender && matchesAge) {
                 filteredList.add(staff);

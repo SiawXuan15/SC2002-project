@@ -1,20 +1,14 @@
 package UserManagement;
 
-//import AppointmentManagement.Appointment;
-import AppointmentManagement.ScheduleDoctor;
-import AppointmentManagement.TimeSlot;
 import DataManagement.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Doctor extends Users implements ScheduleDoctor {
+public class Doctor extends Users {
     private List<Patient> patientList;
-    private List<TimeSlot> availability;
     private String specialization;
-    private String licenseNumber;
-    //private List<Appointment> appointmentList;
     private final appointmentManager appointmentManager;
     private final medicalRecordManager medicalRecordManager;
     private final prescriptionManager prescriptionManager;
@@ -69,8 +63,7 @@ public class Doctor extends Users implements ScheduleDoctor {
                         String diagnosis = scanner.next();
                         System.out.println("Enter treatment:");
                         String treatment = scanner.next();
-                        // Prescription prescription = new Prescription(); 
-                        // updateMedicalRecord(patient, diagnosis, prescription, treatment);
+                    
                     } else {
                         System.out.println("Patient not found.");
                     }
@@ -103,14 +96,7 @@ public class Doctor extends Users implements ScheduleDoctor {
     }
 
 
-    public List<TimeSlot> viewAvailableSlots() {
-        return availability;
-    }
 
-    // public List<Appointment> getAppointmentList() {
-    //     return appointmentList;
-    // }
-// Appointment Management 
 public void recordAppointmentOutcome() {
     if (viewSchedule()==false) {
         System.out.println("No appointments to record outcomes for.");
@@ -121,7 +107,6 @@ public void recordAppointmentOutcome() {
     System.out.println("Enter the Appointment ID for which you want to record the outcome:");
     String appointmentID = scanner.nextLine();
 
-    // Try to retrieve all the appointment records
     List<String[]> appointmentsData = null;
     try {
         appointmentsData = appointmentOutcomeManager.getAllAppointmentOutcomeRecords();  // Assuming this method reads from the file
@@ -132,7 +117,6 @@ public void recordAppointmentOutcome() {
 
     String[] appointmentData = null;
 
-    // Search for the appointment by its ID
     for (String[] row : appointmentsData) {
         if (row[0].equals(appointmentID)) {
             appointmentData = row;
@@ -140,7 +124,6 @@ public void recordAppointmentOutcome() {
         }
     }
 
-    // If the appointment is not found, display an error message
     if (appointmentData == null) {
         System.out.println("Appointment ID not found.");
         return;
@@ -150,7 +133,6 @@ public void recordAppointmentOutcome() {
     String doctorID = appointmentData[2];     
     String date = appointmentData[3];
     
-     // Add Prescription
     System.out.println("\n--- Prescription Details ---");
     System.out.print("Enter medication details (e.g., M001:500mg:30|M002:200mg:15): ");
     String medicationDetails = scanner.nextLine();
@@ -158,16 +140,14 @@ public void recordAppointmentOutcome() {
     System.out.print("Enter instructions (e.g., Take with food): ");
     String instructions = scanner.nextLine();
 
-       // Call dbManager to handle prescription creation
        try {
         prescriptionManager.addPrescriptionToCSV(patientID, doctorID, date, medicationDetails, instructions);
     } catch (IOException e) {
         System.out.println("Error writing prescription data: " + e.getMessage());
-        return;  // Exit the method if there's an error writing the prescription data
+        return;  
     }
 
     
-    // Collect outcome details from the doctor
     System.out.println("\n--- Appointment Outcome Details ---");
     System.out.print("Enter type of service (Consultation, X-ray, Blood test, etc.):");
     String typeOfService = scanner.nextLine();
@@ -176,22 +156,9 @@ public void recordAppointmentOutcome() {
     String consultationNotes = scanner.nextLine();
 
 
-
-    // Collect outcome details from the doctor
-    //System.out.println("Enter type of service (Consultation, X-ray, Blood test, etc.):");
-    //String typeOfService = scanner.nextLine();
-
-    //System.out.println("Enter prescription name:");
-    //String prescriptionName = scanner.nextLine();
-
-    //System.out.println("Enter consultation notes:");
-    //String consultationNotes = scanner.nextLine();
-
-    // Attempt to update the appointment outcome in the database
     try {
-        //dbManager.updateAppointmentOutcome(appointmentID, typeOfService, prescriptionName, consultationNotes);
         appointmentOutcomeManager.updateAppointmentOutcome(appointmentID, typeOfService, medicationDetails, consultationNotes);
-        appointmentManager.setAppointmentStatus(appointmentID, "Completed"); // added
+        appointmentManager.setAppointmentStatus(appointmentID, "Completed"); 
         System.out.println("Appointment outcome recorded successfully.");
     } catch (IOException e) {
         System.out.println("An error occurred while recording the outcome: " + e.getMessage());
@@ -238,10 +205,6 @@ public Patient findPatientById(String patientId) {
                     System.out.println("No appointments found for doctor " + doctorName);
                 }
 
-                //if (!found) {
-                   // System.out.println("No appointments found for doctor " + doctorName);
-                   // return false;
-               // }
             }
         } catch (IOException e) {
             System.out.println("Error reading appointments: " + e.getMessage());
@@ -393,13 +356,12 @@ public Patient findPatientById(String patientId) {
         System.out.println("Enter the patient's name to schedule follow-up appointment:");
         String patientName = scanner.nextLine();
         
-        // Use patient name to find patient ID
         String patientID = null;
         try {
-            patientID = patientManager.getPatientID(patientName); // Find patient by name
+            patientID = patientManager.getPatientID(patientName); 
         } catch (IOException e) {
             System.out.println("Error fetching patient ID: " + e.getMessage());
-            return;  // Exit if there's an issue finding the patient
+            return;  
         }
 
         if (patientID == null) {
@@ -407,32 +369,27 @@ public Patient findPatientById(String patientId) {
             return;
         }
 
-        // Ask for date and time of follow-up appointment
         System.out.println("Enter the follow-up appointment date (yyyy-MM-dd):");
         String followUpDate = scanner.nextLine();
 
         System.out.println("Enter the follow-up appointment time (hh:mm AM/PM):");
         String followUpTime = scanner.nextLine();
 
-        // Create follow-up appointment
-        String newAppId = appointmentManager.generateAppId(); // random generator
+        String newAppId = appointmentManager.generateAppId(); 
         String doctorId = this.getUserID();
 
-        // Create the new appointment object (assuming your Appointment class has an appropriate constructor)
         String[] followUpAppointment = new String[]{
-            newAppId,                            // Appointment ID
-            patientID,                           // Patient ID
-            doctorId,                            // Doctor ID
-            followUpDate,                        // Date
-            followUpTime,                        // Time
-            "Confirmed"                          // Status
+            newAppId,                            
+            patientID,                          
+            doctorId,                          
+            followUpDate,                     
+            followUpTime,                        
+            "Confirmed"                         
         };
 
         try {
-            // Add follow-up appointment to appointment.csv
             appointmentManager.addAppointment(followUpAppointment);
 
-            // Add new confirmed appointment to appointment_outcome.csv
             appointmentOutcomeManager.addToOutcome(newAppId);
             System.out.println("Follow-up appointment with " + patientName + " scheduled successfully for " + followUpDate + " at " + followUpTime);
         } catch (IOException e) {
