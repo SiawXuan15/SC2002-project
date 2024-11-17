@@ -92,6 +92,7 @@ public class Doctor extends Users implements ScheduleDoctor {
                     break;
                 case 8:
                     scheduleFollowUp();
+                    break;
                 case 9:
                     System.out.println("Logging out...");
                     return;
@@ -389,28 +390,31 @@ public Patient findPatientById(String patientId) {
     public void scheduleFollowUp() {
         Scanner scanner = new Scanner(System.in);
 
-        List<String[]> appointments = appointmentManager.getAppointments(); // Fetch appointments from appointmentManager
-        List<String[]> patientList = patientManager.getPatientList(); // Fetch patients from patientManager
-
-        // Step 1: Get the patient's name
         System.out.println("Enter the patient's name to schedule follow-up appointment:");
         String patientName = scanner.nextLine();
         
-        // Step 2: Find the patient by name
-        String patientID = patientManager.getPatientID(patientName); // Find patient by name
+        // Use patient name to find patient ID
+        String patientID = null;
+        try {
+            patientID = patientManager.getPatientID(patientName); // Find patient by name
+        } catch (IOException e) {
+            System.out.println("Error fetching patient ID: " + e.getMessage());
+            return;  // Exit if there's an issue finding the patient
+        }
+
         if (patientID == null) {
             System.out.println("Patient not found.");
             return;
         }
 
-        // Step 4: Ask for the date and time for the follow-up appointment
+        // Ask for date and time of follow-up appointment
         System.out.println("Enter the follow-up appointment date (yyyy-MM-dd):");
         String followUpDate = scanner.nextLine();
 
         System.out.println("Enter the follow-up appointment time (hh:mm AM/PM):");
         String followUpTime = scanner.nextLine();
 
-        // Step 5: Create the follow-up appointment
+        // Create follow-up appointment
         String newAppId = appointmentManager.generateAppId(); // random generator
         String doctorId = this.getUserID();
 
@@ -425,9 +429,12 @@ public Patient findPatientById(String patientId) {
         };
 
         try {
-            // Step 6: Save the follow-up appointment to the appointment manager
+            // Add follow-up appointment to appointment.csv
             appointmentManager.addAppointment(followUpAppointment);
-            System.out.println("Follow-up appointment scheduled successfully for " + followUpDate + " at " + followUpTime);
+
+            // Add new confirmed appointment to appointment_outcome.csv
+            appointmentOutcomeManager.addToOutcome(newAppId);
+            System.out.println("Follow-up appointment with " + patientName + " scheduled successfully for " + followUpDate + " at " + followUpTime);
         } catch (IOException e) {
             System.out.println("Error scheduling follow-up appointment: " + e.getMessage());
         }

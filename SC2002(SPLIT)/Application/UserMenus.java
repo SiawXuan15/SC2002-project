@@ -92,7 +92,7 @@ public class UserMenus {
                 break;
 
             case "Doctor":
-                Users existingDoctor = new Doctor(userID, appointmentManager, appointmentOutcomeManager, medicalRecordManager, prescriptionManager, userManager);
+                Users existingDoctor = new Doctor(userID, appointmentManager, appointmentOutcomeManager, medicalRecordManager, prescriptionManager, userManager, patientManager);
                 System.out.println("Welcome to HMS, Doctor " + existingDoctor.getName());
                 existingDoctor.displayMenu();
                 break;
