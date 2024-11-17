@@ -332,7 +332,8 @@ public Patient findPatientById(String patientId) {
             }
 
             System.out.println("=== Medical Records for Patients Under Your Care ===");
-            for (String[] record : medicalRecords) {
+            for (int i = 1; i < medicalRecords.size(); i++) {
+                String[] record = medicalRecords.get(i);
                 System.out.println("Record ID: " + record[0]);
                 System.out.println("Patient ID: " + record[1]);
                 System.out.println("User ID: " + record[2]);
