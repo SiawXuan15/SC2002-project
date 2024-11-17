@@ -1,5 +1,3 @@
-Prescription ID,Appointment ID,Patient ID,Doctor ID,Date,Medication Details,Instructions, Dispensed Quantity
-RX001,AP001,P1001,D001,2024-11-01,M001:500mg:30|Ibuprofen:200mg:15,"Take with food.", 0|0
-RX002,AP003,P1002,D002,2024-11-16,M003:500mg:20,"Take before sleeping.",0
-RX003,AP004,P1003,D003,2024-11-17,M003:500mg:30,"Take twice daily for 7 days.",0
-RX004,AP005,P1004,D004,2024-11-18,M003:500mg:40,"Take three times a day for 10 days.",0
+Prescription ID,Appointment ID,Patient ID,Doctor ID,Date,Medication Details,Instructions
+RX001,AP001,P1001,D001,2024-11-01,Paracetamol:500mg:30|Ibuprofen:200mg:15,"Take with food."
+RX002,AP003,P1002,D002,2024-11-16,Amoxicillin:20mg,"Take before sleeping" 

@@ -4,11 +4,5 @@ D002,Emily Clarke,password456,Doctor,emily.clarke@example.com,92345678
 P001,Mark Lee,password789,Pharmacist,mark.lee@example.com,93456789
 A001,Sarah Lee,newpassword,Administrator,sarah.lee@example.com,94567890
 D003,Lucy Adams,newpassword123,Doctor,dr_brown@gmail.com,98857665
-<<<<<<< Updated upstream
 P1001,Alice,password123,Patient,alice123@example.com,84840686
 P1002,Bob Stone,passworduvw,Patient,bob.stone@example.com,99876543
-=======
-P1001,Alice,password123,Patient,alice@example.com,96546422
-P1002,Bob Stone,passworduvw,Patient,bob.stone@example.com,99876543
-P1003,Katie Wong,passwordrst,Patient,katie.wong@example.com,83342533
->>>>>>> Stashed changes
