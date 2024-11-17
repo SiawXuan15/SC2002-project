@@ -192,16 +192,13 @@ public class Pharmacist extends Users implements InventoryMonitor {
 
         System.out.println("=== Prescription Requests ===");
 
-        //for (String[] record : prescriptions) {
-        for (int i = 1; i < prescriptions.size(); i++) {
-            String[] record = prescriptions.get(i); // get the record at index i
-
+        for (String[] record : prescriptions) {
             if (record == null || record.length < 7 || String.join("", record).trim().isEmpty()) {
                 continue;
             }
 
-            for (int j = 0; j < record.length; j++) {
-                record[j] = record[j].trim();
+            for (int i = 0; i < record.length; i++) {
+                record[i] = record[i].trim();
             }
 
             System.out.println("Prescription ID: " + record[0]);
