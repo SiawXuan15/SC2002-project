@@ -31,9 +31,7 @@ public class staffManager {
             if (staffID.startsWith("S")) {
                 try {
                     int idNumber = Integer.parseInt(staffID.substring(1)); // Extract numeric part
-                    if (idNumber > maxID) {
-                        maxID = idNumber; // Keep track of the largest ID
-                    }
+                    maxID = Math.max(maxID, idNumber); // Keep track of the largest ID
                 } catch (NumberFormatException e) {
                     // Ignore any invalid ID formats
                 }
@@ -61,10 +59,14 @@ public class staffManager {
 
     private String getRolePrefix(String role) {
         switch (role.toLowerCase()) {
-            case "doctor": return "D";
-            case "administrator": return "A";
-            case "pharmacist": return "P";
-            default: return "U"; // Default prefix for unrecognized roles
+            case "doctor":
+                return "D";
+            case "administrator":
+                return "A";
+            case "pharmacist":
+                return "P";
+            default:
+                return "U"; // Default prefix for unrecognized roles
         }
     }
 

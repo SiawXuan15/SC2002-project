@@ -5,18 +5,29 @@ import java.util.List;
 
 public class userManager {
     private final String userFilePath;
-    private final CSVReader csvReader;
-    private final CSVWriter csvWriter;
 
     // Constructor
-    public userManager(String userFilePath, CSVReader csvReader, CSVWriter csvWriter) {
+    public userManager(String userFilePath) {
         this.userFilePath = userFilePath;
-        this.csvReader = csvReader;
-        this.csvWriter = csvWriter;
+    }
+
+    // Generic CSV Read
+    private List<String[]> readCSV(String filePath) throws IOException {
+        return CSVReader.readCSV(filePath);
+    }
+
+    // Generic CSV Write
+    private void writeCSV(String filePath, List<String[]> data) throws IOException {
+        CSVWriter.writeCSV(filePath, data);
+    }
+
+    // Generic CSV Append
+    private void appendToCSV(String filePath, String[] data) throws IOException {
+        CSVWriter.appendToCSV(filePath, data);
     }
 
     public String[] getUserById(String userID) throws IOException {
-        List<String[]> users = csvReader.readCSV(userFilePath);
+        List<String[]> users = readCSV(userFilePath);
         for (String[] user : users) {
             if (user[0].equalsIgnoreCase(userID)) { // Assuming UserID is in the first column
                 return user;
@@ -26,7 +37,7 @@ public class userManager {
     }
 
     public String getUserName(String userID) throws IOException {
-        List<String[]> users = csvReader.readCSV(userFilePath);
+        List<String[]> users = readCSV(userFilePath);
         for (String[] user : users) {
             if (user[0].trim().equalsIgnoreCase(userID.trim())) {  // Trim and compare case-insensitively
                 return user[1].trim();  // Trim the name to remove any leading/trailing spaces
@@ -43,11 +54,11 @@ public class userManager {
 
     // Update user password
     public boolean updateUserPassword(String userID, String newPassword) throws IOException {
-        List<String[]> users = csvReader.readCSV(userFilePath);
+        List<String[]> users = readCSV(userFilePath);
         for (String[] user : users) {
             if (user[0].trim().equals(userID.trim())) {
                 user[2] = newPassword; // Assuming password is at index 2
-                csvWriter.writeCSV(userFilePath, users);
+                writeCSV(userFilePath, users);
                 return true;
             }
         }
@@ -60,19 +71,19 @@ public class userManager {
     }
 
     public List<String[]> getUsersList() throws IOException {
-        return csvReader.readCSV(userFilePath);
+        return readCSV(userFilePath);
     }
 
     public void addUser(String[] newUser) throws IOException {
-        csvWriter.appendToCSV(userFilePath, newUser);
+        appendToCSV(userFilePath, newUser);
     }
 
     public void updateUsersList(List<String[]> updatedUsers) throws IOException {
-        csvWriter.writeCSV(userFilePath, updatedUsers);
+        writeCSV(userFilePath, updatedUsers);
     }
 
     public String getRoleByUserID(String userID) throws IOException {
-        List<String[]> users = csvReader.readCSV(userFilePath);
+        List<String[]> users = readCSV(userFilePath);
         for (String[] user : users) {
             if (user[0].trim().equalsIgnoreCase(userID.trim())) { // Assuming UserID is at index 0
                 return user[3].trim(); // Assuming Role is at index 3
