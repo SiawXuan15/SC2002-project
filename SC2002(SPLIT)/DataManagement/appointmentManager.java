@@ -13,7 +13,7 @@ public class appointmentManager {
     }
 
     public String generateAppId() {
-        return "A" + UUID.randomUUID().toString();
+        return "AP" + UUID.randomUUID().toString();
     }
 
     public List<String[]> getAppointments() throws IOException {
