@@ -454,7 +454,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                     // Display the appointments along with doctor names
                     System.out.println("Your Appointments:");
                     for (String[] appointment : appointments) {
-                        if (appointment[1].equals(this.getUserID())) { // Only show the patient's appointments
+                        if (appointment[1].equals(this.getUserID()) && !("Completed".equals(appointment[5]))) { // Only show the patient's appointments
                             doctorName = doctorManager.getDoctorName(appointment[2]);
         
                             System.out.println("Appointment ID: " + appointment[0]);
