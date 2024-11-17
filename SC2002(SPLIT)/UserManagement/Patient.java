@@ -1,8 +1,7 @@
 package UserManagement;
 
-import AppointmentManagement.Appointment;
+//import AppointmentManagement.Appointment;
 import AppointmentManagement.SchedulePatient;
-import AppointmentManagement.TimeSlot;
 import DataManagement.*;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ import java.util.Scanner;
 public class Patient extends Users implements SchedulePatient, PaymentProcessor {
 
     //private MedicalRecord medicalRecord;
-    private List<Appointment> appointmentList;
+    //private List<Appointment> appointmentList;
     // private LocalDate DOB; 
     // private String insuranceDetails;
     // private String bloodType;
@@ -345,21 +344,21 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                 }
             }
         
-            @Override
-            public List<TimeSlot> cancel(Appointment appointment) {
-                if (!appointmentList.contains(appointment)) {
-                    System.out.println("Appointment not found in the patient's list.");
-                    return new ArrayList<>();
-                }
-                appointmentList.remove(appointment);
-                Doctor doctor = appointment.getDoctor();
-                doctor.getAppointmentList().remove(appointment);
+            // @Override
+            // public List<TimeSlot> cancel(Appointment appointment) {
+            //     if (!appointmentList.contains(appointment)) {
+            //         System.out.println("Appointment not found in the patient's list.");
+            //         return new ArrayList<>();
+            //     }
+            //     appointmentList.remove(appointment);
+            //     Doctor doctor = appointment.getDoctor();
+            //     doctor.getAppointmentList().remove(appointment);
         
-                TimeSlot freedSlot = new TimeSlot(appointment.getDate(), appointment.getTime());
-                doctor.viewAvailableSlots().add(freedSlot);
-                System.out.println("Canceled appointment with ID: " + appointment.getAppointmentId());
-                return List.of(freedSlot);
-            }
+            //     TimeSlot freedSlot = new TimeSlot(appointment.getDate(), appointment.getTime());
+            //     doctor.viewAvailableSlots().add(freedSlot);
+            //     System.out.println("Canceled appointment with ID: " + appointment.getAppointmentId());
+            //     return List.of(freedSlot);
+            // }
 
 
         
@@ -456,6 +455,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                 }
             }
         
+            
             public void rescheduleAppointment() {
                 try {
                     Scanner scanner = new Scanner(System.in);
@@ -509,7 +509,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                 }
             }
         
-            
+            @Override
                 public void cancelAppointment() {
                     try {
                         Scanner scanner = new Scanner(System.in);

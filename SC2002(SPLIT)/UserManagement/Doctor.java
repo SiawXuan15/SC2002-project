@@ -1,6 +1,6 @@
 package UserManagement;
 
-import AppointmentManagement.Appointment;
+//import AppointmentManagement.Appointment;
 import AppointmentManagement.ScheduleDoctor;
 import AppointmentManagement.TimeSlot;
 import DataManagement.*;
@@ -14,7 +14,7 @@ public class Doctor extends Users implements ScheduleDoctor {
     private List<TimeSlot> availability;
     private String specialization;
     private String licenseNumber;
-    private List<Appointment> appointmentList;
+    //private List<Appointment> appointmentList;
     private final appointmentManager appointmentManager;
     private final medicalRecordManager medicalRecordManager;
     private final prescriptionManager prescriptionManager;
@@ -107,9 +107,9 @@ public class Doctor extends Users implements ScheduleDoctor {
         return availability;
     }
 
-    public List<Appointment> getAppointmentList() {
-        return appointmentList;
-    }
+    // public List<Appointment> getAppointmentList() {
+    //     return appointmentList;
+    // }
 // Appointment Management 
 public void recordAppointmentOutcome() {
     if (viewSchedule()==false) {
