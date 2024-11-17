@@ -3,6 +3,7 @@ package DataManagement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class appointmentManager {
     private final String appointmentsFilePath;
@@ -10,6 +11,14 @@ public class appointmentManager {
     // Constructor
     public appointmentManager(String appointmentsFilePath) {
         this.appointmentsFilePath = appointmentsFilePath;
+    }
+
+    // Generate random app id when doctor schedule follow-up appointments
+    public String generateAppId() {
+        /*Random rand = new Random();
+        int rand_int1 = rand.nextInt(100000);
+        return "A" + rand_int1; */
+        return "A" + UUID.randomUUID().toString();
     }
 
     // Get all appointments

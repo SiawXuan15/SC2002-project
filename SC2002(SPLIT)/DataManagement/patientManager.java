@@ -66,10 +66,21 @@ public class patientManager {
     }
 
     public String getPatientName(String userID) throws IOException {
-        List<String[]> patients = CSVReader.readCSV(patientFilePath); // Static method accessed via class name
+        List<String[]> patients = CSVReader.readCSV(patientFilePath);
         for (String[] patient : patients) {
             if (patient[1].equals(userID)) { // Assuming UserID is at index 1
                 return patient[3]; // Assuming Name is at index 3
+            }
+        }
+        return null; // Return null if no match is found
+    }
+    
+    // for doctor to retrieve patient name to book follow up appointment
+    public String getPatientID(String name) throws IOException {
+        List<String[]> patients = CSVReader.readCSV(patientFilePath);
+        for (String[] patient : patients) {
+            if (patient[3].equals(name)) { // Assuming Name is at index 3
+                return patient[1]; // Assuming UserID is at index 1
             }
         }
         return null; // Return null if no match is found
