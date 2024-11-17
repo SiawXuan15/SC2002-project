@@ -1,11 +1,10 @@
 package UserManagement;
 
-import DataManagement.doctorManager;
+import DataManagement.appointmentManager;
+import DataManagement.appointmentOutcomeManager;
 import DataManagement.medicineManager;
 import DataManagement.orderRequestManager;
 import DataManagement.staffManager;
-import DataManagement.appointmentOutcomeManager;
-import DataManagement.appointmentManager;
 import DataManagement.userManager;
 import InventoryManagement.InventoryEditor;
 import java.io.IOException;
@@ -42,7 +41,7 @@ public class Administrator extends Users implements InventoryEditor {
 
     @Override
     public void displayMenu() {
-        Scanner sc = new Scanner(System.in); // Initialize Scanner only once
+        Scanner sc = new Scanner(System.in); 
 
         while (true) {
             System.out.println("=========================================================");
@@ -56,11 +55,11 @@ public class Administrator extends Users implements InventoryEditor {
             System.out.println("=========================================================");
 
             int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline left-over
+            sc.nextLine(); 
 
             switch (choice) {
                 case 1:
-                    manageHospitalStaff(sc);
+                    manageHospitalStaff(sc); 
                     break;
                 case 2:
                     viewAppointmentDetails();
@@ -81,83 +80,164 @@ public class Administrator extends Users implements InventoryEditor {
         }
     }
 
-    // Manage Hospital Staff
-    private void manageHospitalStaff(Scanner sc) {
-        System.out.println("=== View and Manage Hospital Staff ===");
-        System.out.println("1. View Staff");
-        System.out.println("2. Manage Staff");
-        System.out.print("Please select an option (1-2): ");
 
-        int staffChoice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+// View and Manage Hospital Staff
+private void manageHospitalStaff(Scanner sc) {
+    System.out.println("=== View and Manage Hospital Staff ===");
+    System.out.println("1. View Staff");
+    System.out.println("2. Manage Staff");
+    System.out.print("Please select an option (1-2): ");
 
-        if (staffChoice == 1) {
-            viewStaff();
-        } else if (staffChoice == 2) {
-            manageStaff(sc); // Pass the scanner to manageStaff for input
-        } else {
-            System.out.println("Invalid choice.");
-        }
+    int staffChoice = sc.nextInt();
+    sc.nextLine(); // Consume newline
+
+    switch (staffChoice) {
+        case 1:
+            viewStaff(sc);
+            break;
+        case 2:
+            manageStaff(sc);
+            break;
+        default:
+            System.out.println("Invalid choice. Please select again.");
+            break;
     }
+}
 
-    // View staff
-    private void viewStaff() {
-        try {
+// View staff with option to filter
+private void viewStaff(Scanner sc) {
+    System.out.println("=== View Staff Options ===");
+    System.out.println("1. View All Staff");
+    System.out.println("2. Filter Staff");
+    System.out.print("Please select an option (1-2): ");
+
+    int choice = sc.nextInt();
+    sc.nextLine(); // Consume newline
+
+    try {
+        if (choice == 1) {
+            // View all staff
             List<String[]> staffList = staffManager.getStaffList();
 
             if (staffList.isEmpty()) {
                 System.out.println("No staff found.");
             } else {
-                System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
-                        "StaffID", "UserID", "Name", "Role", "Gender", "Age", "Specialization", "Contact");
-                System.out.println("=============================================================================================================");
-
-                // Loop through each staff member and print details, skipping the header row from CSV
-                boolean isHeader = true;
-                for (String[] staff : staffList) {
-                    if (isHeader) {
-                        isHeader = false; // Skip the first row (header from the CSV file)
-                        continue;
-                    }
-                    System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
-                            staff[0], staff[1], staff[2], staff[3], staff[4], staff[5], staff[6], staff[7]);
-                }
+                displayStaffList(staffList);
             }
-        } catch (IOException e) {
-            System.err.println("Error retrieving staff data: " + e.getMessage());
+        } else if (choice == 2) {
+            filterStaff(sc);
+        } else {
+            System.out.println("Invalid choice.");
         }
+    } catch (IOException e) {
+        System.err.println("Error retrieving staff data: " + e.getMessage());
+    }
+}
+
+// Method to filter staff
+private void filterStaff(Scanner sc) throws IOException {
+    System.out.println("=== Filter Staff ===");
+    System.out.println("1. Filter by Role");
+    System.out.println("2. Filter by Gender");
+    System.out.println("3. Filter by Age");
+    System.out.println("4. Filter by Role, Gender, and Age");
+    System.out.print("Please select a filter option (1-4): ");
+
+    int filterChoice = sc.nextInt();
+    sc.nextLine(); // Consume newline
+
+    List<String[]> filteredStaff = null;
+
+    switch (filterChoice) {
+        case 1:
+            System.out.print("Enter role (e.g., Doctor, Pharmacist): ");
+            String role = sc.nextLine();
+            filteredStaff = staffManager.filterStaff("role", role);
+            break;
+        case 2:
+            System.out.print("Enter gender (Male/Female): ");
+            String gender = sc.nextLine();
+            filteredStaff = staffManager.filterStaff("gender", gender);
+            break;
+        case 3:
+            System.out.print("Enter age: ");
+            String age = sc.nextLine();
+            filteredStaff = staffManager.filterStaff("age", age);
+            break;
+        case 4:
+            System.out.print("Enter role: ");
+            role = sc.nextLine();
+            System.out.print("Enter gender: ");
+            gender = sc.nextLine();
+            System.out.print("Enter age: ");
+            age = sc.nextLine();
+            filteredStaff = staffManager.filterStaffByMultipleCriteria(role, gender, age);
+            break;
+        default:
+            System.out.println("Invalid choice.");
+            return;
     }
 
-    // Manage Staff options
-    private void manageStaff(Scanner sc) {
-        System.out.println("Manage Staff Options:");
-        System.out.println("1. Add New Staff");
-        System.out.println("2. Update Existing Staff");
-        System.out.println("3. Remove Staff");
-        System.out.print("Please select an option (1-3): ");
+    displayFilteredStaff(filteredStaff);
+}
 
-        int manageChoice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+// Helper method to display staff members
+private void displayStaffList(List<String[]> staffList) {
+    if (staffList.isEmpty()) {
+        System.out.println("No staff members found.");
+    } else {
+        System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
+                "StaffID", "UserID", "Name", "Role", "Gender", "Age", "Specialization", "Contact");
+        System.out.println("=============================================================================================================");
 
-        switch (manageChoice) {
-            case 1:
-                try {
-                    staffManager.addStaff();
-                } catch (IOException e) {
-                    System.err.println("Error updating staff information: " + e.getMessage());
-                }
-                break;
-            case 2:
-                updateStaff(sc);
-                break;
-            case 3:
-                removeStaff(sc);
-                break;
-            default:
-                System.out.println("Invalid choice.");
-                break;
+        for (String[] staff : staffList) {
+            System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
+                    staff[0], staff[1], staff[2], staff[3], staff[4], staff[5], staff[6], staff[7]);
         }
     }
+}
+
+// Helper method to display filtered staff members
+private void displayFilteredStaff(List<String[]> filteredStaff) {
+    if (filteredStaff == null || filteredStaff.isEmpty()) {
+        System.out.println("No staff members found for the given filter.");
+    } else {
+        System.out.println("=== Filtered Staff Members ===");
+        displayStaffList(filteredStaff);
+    }
+}
+
+// Manage Staff options
+private void manageStaff(Scanner sc) {
+    System.out.println("Manage Staff Options:");
+    System.out.println("1. Add New Staff");
+    System.out.println("2. Update Existing Staff");
+    System.out.println("3. Remove Staff");
+    System.out.print("Please select an option (1-3): ");
+
+    int manageChoice = sc.nextInt();
+    sc.nextLine(); // Consume newline
+
+    switch (manageChoice) {
+        case 1:
+            try {
+                staffManager.addStaff();
+            } catch (IOException e) {
+                System.err.println("Error adding staff member: " + e.getMessage());
+            }
+            break;
+        case 2:
+            updateStaff(sc);
+            break;
+        case 3:
+            removeStaff(sc);
+            break;
+        default:
+            System.out.println("Invalid choice.");
+            break;
+    }
+
+}
 
     // Update staff details
     private void updateStaff(Scanner sc) {
