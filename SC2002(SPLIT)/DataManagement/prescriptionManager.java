@@ -1,15 +1,13 @@
 package DataManagement;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import AppointmentManagement.Appointment;
 import UserManagement.Doctor;
 import UserManagement.Patient;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class prescriptionManager {
     private final String prescriptionFilePath;
@@ -19,18 +17,46 @@ public class prescriptionManager {
     private final doctorManager doctorManager;
     private final patientManager patientManager;
     private final String appointmentOutcomeFilePath; 
+    private final userManager userManager; 
+    private final appointmentManager appointmentManager;
+    private final appointmentOutcomeManager appointmentOutcomeManager;
+    private final medicalRecordManager medicalRecordManager;
+    private final prescriptionManager prescriptionManager; // You don't really need to include itself, removing to avoid confusion.
+    private final staffManager staffManager;
 
-    // Simplified Constructor
-    public prescriptionManager(String prescriptionFilePath, CSVReader csvReader, CSVWriter csvWriter,
-                               doctorManager doctorManager, patientManager patientManager, String appointmentsFilePath, String appointmentOutcomeFilePath) {
+    // Updated Constructor
+    public prescriptionManager(
+            String prescriptionFilePath,
+            String appointmentsFilePath,
+            String appointmentOutcomeFilePath,
+            CSVReader csvReader,
+            CSVWriter csvWriter,
+            doctorManager doctorManager,
+            patientManager patientManager,
+            userManager userManager,
+            appointmentManager appointmentManager,
+            appointmentOutcomeManager appointmentOutcomeManager,
+            medicalRecordManager medicalRecordManager,
+            staffManager staffManager,
+            prescriptionManager prescriptionManager) {
+        
         this.prescriptionFilePath = prescriptionFilePath;
+        this.appointmentsFilePath = appointmentsFilePath;
+        this.appointmentOutcomeFilePath = appointmentOutcomeFilePath;
         this.csvReader = csvReader;
         this.csvWriter = csvWriter;
         this.doctorManager = doctorManager;
         this.patientManager = patientManager;
-        this.appointmentsFilePath = appointmentsFilePath;
-        this.appointmentOutcomeFilePath = appointmentOutcomeFilePath; 
+        this.userManager = userManager;
+        this.appointmentManager = appointmentManager;
+        this.appointmentOutcomeManager = appointmentOutcomeManager;
+        this.medicalRecordManager = medicalRecordManager;
+        this.staffManager = staffManager;
+        this.prescriptionManager = prescriptionManager;
     }
+
+
+
 
     public void updatePrescriptionStatus(String appointmentOutcomeFilePath, String appointmentID, String status) throws IOException {
         List<String[]> records = CSVReader.readCSV(appointmentOutcomeFilePath);
@@ -178,8 +204,30 @@ public class prescriptionManager {
             for (String[] record : appointments) {
                 if (record[0].equals(appointmentID)) { // Match the Appointment ID
                     // Retrieve Patient and Doctor objects using their IDs
-                    Patient patient = new Patient(record[1], this); // Assuming Patient constructor is compatible
-                    Doctor doctor = new Doctor(record[2], this);    // Assuming Doctor constructor is compatible
+                    // Patient patient = new Patient(record[1], this); 
+                    // Doctor doctor = new Doctor(record[2], this);    
+                    Patient patient = new Patient(
+                        record[1], 
+                        userManager, 
+                        patientManager, 
+                        staffManager, 
+                        appointmentManager, 
+                        medicalRecordManager, 
+                        prescriptionManager, 
+                        doctorManager, 
+                        appointmentOutcomeManager
+                    );
+    
+                    Doctor doctor = new Doctor(
+                        record[2], 
+                        appointmentManager, 
+                        appointmentOutcomeManager, 
+                        medicalRecordManager, 
+                        prescriptionManager, 
+                        userManager
+                    );
+    
+                // Parse the Date and Time
     
                     // Parse the Date and Time
                     Date date = new SimpleDateFormat("yyyy-MM-dd").parse(record[3]);

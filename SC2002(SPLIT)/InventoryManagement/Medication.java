@@ -1,27 +1,27 @@
-package InventoryManagement;
+// package InventoryManagement;
 
-import java.time.LocalDate;
+// import java.time.LocalDate;
 
-public class Medication {
+// public class Medication {
 
-    private String medicationID;
-    private String medicationName;
-    private int initialStock;
-    private int lowStockAlert;
-    private String dosageInformation;
-    private LocalDate expiryDate;
-    private String status;
+//     private String medicationID;
+//     private String medicationName;
+//     private int initialStock;
+//     private int lowStockAlert;
+//     private String dosageInformation;
+//     private LocalDate expiryDate;
+//     private String status;
 
-    // Constructor to fit the CSV format
-    public Medication(String medicationID, String medicationName, int initialStock, int lowStockAlert, String dosageInformation, LocalDate expiryDate) {
-        this.medicationID = medicationID;
-        this.medicationName = medicationName;
-        this.initialStock = initialStock;
-        this.lowStockAlert = lowStockAlert;
-        this.dosageInformation = dosageInformation;
-        this.expiryDate = expiryDate;
-        this.status = "Available"; // Default status
-    }
+//     // Constructor to fit the CSV format
+//     public Medication(String medicationID, String medicationName, int initialStock, int lowStockAlert, String dosageInformation, LocalDate expiryDate) {
+//         this.medicationID = medicationID;
+//         this.medicationName = medicationName;
+//         this.initialStock = initialStock;
+//         this.lowStockAlert = lowStockAlert;
+//         this.dosageInformation = dosageInformation;
+//         this.expiryDate = expiryDate;
+//         this.status = "Available"; // Default status
+//     }
 
 
     // public String getMedicationDetails() {
@@ -84,4 +84,3 @@ public class Medication {
     //     this.lowStockAlert = lowStockAlert;
     // }
 
-}

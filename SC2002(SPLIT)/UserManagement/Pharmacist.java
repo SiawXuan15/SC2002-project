@@ -15,7 +15,7 @@ public class Pharmacist extends Users implements InventoryMonitor {
     private final String userID;
 
     public Pharmacist(String userID, userManager userManager, appointmentOutcomeManager appointmentOutcomeManager,
-    PrescriptionManager prescriptionManager, medicineManager medicineManager,
+    prescriptionManager prescriptionManager, medicineManager medicineManager,
     orderRequestManager orderRequestManager) throws IOException {
 super(userID, userManager);
 this.userID = userID; 

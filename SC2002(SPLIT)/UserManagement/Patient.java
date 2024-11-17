@@ -4,18 +4,15 @@ import AppointmentManagement.Appointment;
 import AppointmentManagement.SchedulePatient;
 import AppointmentManagement.TimeSlot;
 import DataManagement.*;
-// import MedicalRecords.AppointmentOutcomeRecord;
-import MedicalRecords.MedicalRecord;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Patient extends Users implements SchedulePatient, PaymentProcessor {
 
-    private MedicalRecord medicalRecord;
+    //private MedicalRecord medicalRecord;
     private List<Appointment> appointmentList;
     // private LocalDate DOB; 
     // private String insuranceDetails;
@@ -47,6 +44,9 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
         this.staffManager = staffManager;
         this.patientManager = patientManager; 
     }
+    
+
+
 
     @Override
     public void displayMenu() {
@@ -578,10 +578,37 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                     return super.getUserID(); // This calls the getUserID method from the Users class
                 }
             
+                // public void viewMedicalRecord() {
+                //     // MedicalRecord medicalRecord = new MedicalRecord(getUserID(), medicalRecordManager);
+                //     // medicalRecord.printSummary();
+                //     String userID = getUserID();  // Assuming `getUserID()` method is available to get the current user's ID.
+                //     String[] medicalRecord = medicalRecordManager.getMedicalRecordByUserID(userID);
+
+                // }
+
                 public void viewMedicalRecord() {
-                    MedicalRecord medicalRecord = new MedicalRecord(getUserID(), medicalRecordManager);
-                    medicalRecord.printSummary();
+                    try {
+                        String userID = getUserID();  // Assuming `getUserID()` method is available to get the current user's ID.
+                        String[] medicalRecord = medicalRecordManager.getMedicalRecordByUserID(userID);
+                        
+                        if (medicalRecord != null) {
+                            // Print the medical record summary here
+                            System.out.println("=== Medical Record Summary ===");
+                            System.out.println("Patient ID: " + medicalRecord[0]);
+                            System.out.println("Name: " + medicalRecord[1]);
+                            System.out.println("Date of Birth: " + medicalRecord[2]);
+                            System.out.println("Blood Type: " + medicalRecord[3]);
+                            System.out.println("Past Diagnoses: " + medicalRecord[4]);
+                            System.out.println("Medications: " + medicalRecord[5]);
+                            // Add other fields you need here
+                        } else {
+                            System.out.println("No medical record found for the user.");
+                        }
+                    } catch (IOException e) {
+                        System.err.println("Error accessing medical records: " + e.getMessage());
+                    }
                 }
+                
             
                 public boolean updateContactInfo(String newEmail, String newContact) {
                     try {
