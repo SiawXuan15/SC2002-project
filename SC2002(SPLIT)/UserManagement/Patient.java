@@ -246,11 +246,21 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                             break;
                         case 2:
                             System.out.print("Enter new gender (Male/Female): ");
-                            patientRecord[5] = scanner.nextLine(); // Gender is at index 5
+                            String gender = scanner.nextLine().trim();
+                            while (!gender.equalsIgnoreCase("Male") && !gender.equalsIgnoreCase("Female")) {
+                                System.out.print("Invalid gender. Please enter 'Male' or 'Female': ");
+                                gender = scanner.nextLine().trim();
+                            }
+                            patientRecord[5] = gender; // Gender is at index 5
                             break;
                         case 3:
                             System.out.print("Enter new contact number: ");
-                            patientRecord[7] = scanner.nextLine(); // Contact Number is at index 7
+                            String contact = scanner.nextLine().trim();
+                            while (!contact.matches("[89]\\d{7}")) {
+                                System.out.print("Invalid contact number. It should start with 8 or 9 and have 8 digits. Please try again: ");
+                                contact = scanner.nextLine().trim();
+                            }
+                            patientRecord[7] = contact; // Contact Number is at index 7
                             contactUpdated = true;
                             break;
                         case 4:
@@ -264,7 +274,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                             break;
                         case 6:
                             System.out.print("Enter new date of birth (yyyy-mm-dd): ");
-                            String dobString = scanner.nextLine();
+                            String dobString = scanner.nextLine().trim();
                             try {
                                 LocalDate.parse(dobString); // Validate the date format
                                 patientRecord[4] = dobString; // Date of Birth is at index 4
@@ -278,6 +288,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                         default:
                             System.out.println("Invalid choice. Please try again.");
                     }
+                    
                 }
     
                 // Write the updated patient list back to the CSV file
