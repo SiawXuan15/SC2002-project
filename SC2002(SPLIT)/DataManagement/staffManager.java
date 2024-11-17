@@ -233,4 +233,21 @@ public class staffManager {
         }
         return filteredList;
     }
+         public List<String[]> filterStaffByMultipleCriteria(String role, String gender, String age) throws IOException {
+        List<String[]> staffList = getStaffList();
+        List<String[]> filteredList = new ArrayList<>();
+
+        for (String[] staff : staffList) {
+            boolean matchesRole = (role == null || role.isEmpty() || staff[3].equalsIgnoreCase(role)); // Assuming Role is at index 3
+            boolean matchesGender = (gender == null || gender.isEmpty() || staff[4].equalsIgnoreCase(gender)); // Assuming Gender is at index 4
+            boolean matchesAge = (age == null || age.isEmpty() || staff[5].equals(age)); // Assuming Age is at index 5
+
+            if (matchesRole && matchesGender && matchesAge) {
+                filteredList.add(staff);
+            }
+        }
+
+        return filteredList;
+    }
+
 }

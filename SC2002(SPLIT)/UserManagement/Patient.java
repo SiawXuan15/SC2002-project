@@ -613,17 +613,21 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                     try {
                         String userID = getUserID();  // Assuming `getUserID()` method is available to get the current user's ID.
                         String[] medicalRecord = medicalRecordManager.getMedicalRecordByUserID(userID);
-                        
+                
                         if (medicalRecord != null) {
-                            // Print the medical record summary here
+                            // Print the complete medical record summary
                             System.out.println("=== Medical Record Summary ===");
-                            System.out.println("Patient ID: " + medicalRecord[0]);
-                            System.out.println("Name: " + medicalRecord[1]);
-                            System.out.println("Date of Birth: " + medicalRecord[2]);
-                            System.out.println("Blood Type: " + medicalRecord[3]);
-                            System.out.println("Past Diagnoses: " + medicalRecord[4]);
-                            System.out.println("Medications: " + medicalRecord[5]);
-                            // Add other fields you need here
+                            System.out.println("Record ID: " + medicalRecord[0]); // Record ID
+                            System.out.println("Patient ID: " + medicalRecord[1]); // Patient ID
+                            System.out.println("User ID: " + medicalRecord[2]); // User ID
+                            System.out.println("Name: " + medicalRecord[3]); // Name
+                            System.out.println("Date of Birth: " + medicalRecord[4]); // Date of Birth
+                            System.out.println("Gender: " + medicalRecord[5]); // Gender
+                            System.out.println("Contact Information: " + medicalRecord[6]); // Contact Information
+                            System.out.println("Email: " + medicalRecord[7]); // Email
+                            System.out.println("Blood Type: " + medicalRecord[8]); // Blood Type
+                            System.out.println("Past Diagnoses and Treatments: " + medicalRecord[9]); // Past Diagnoses and Treatments
+                            System.out.println("Doctor ID: " + medicalRecord[10]); // Doctor ID
                         } else {
                             System.out.println("No medical record found for the user.");
                         }
@@ -631,6 +635,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                         System.err.println("Error accessing medical records: " + e.getMessage());
                     }
                 }
+                
                 
             
                 public boolean updateContactInfo(String newEmail, String newContact) {
