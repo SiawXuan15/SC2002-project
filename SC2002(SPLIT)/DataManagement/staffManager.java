@@ -2,8 +2,9 @@ package DataManagement;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Scanner;  
 
 public class staffManager {
     private final String staffFilePath;
@@ -217,21 +218,25 @@ public class staffManager {
         }
         return filteredList;
     }
-         public List<String[]> filterStaffByMultipleCriteria(String role, String gender, String age) throws IOException {
+    public List<String[]> filterStaffByMultipleCriteria(String role, String gender, String age) throws IOException {
         List<String[]> staffList = getStaffList();
         List<String[]> filteredList = new ArrayList<>();
-
+    
         for (String[] staff : staffList) {
-            boolean matchesRole = (role == null || role.isEmpty() || staff[3].equalsIgnoreCase(role)); 
-            boolean matchesGender = (gender == null || gender.isEmpty() || staff[4].equalsIgnoreCase(gender)); 
-            boolean matchesAge = (age == null || age.isEmpty() || staff[5].equals(age)); 
-
-            if (matchesRole && matchesGender && matchesAge) {
-                filteredList.add(staff);
+            if (staff.length >= 6) { // Ensure there are at least 6 elements
+                boolean matchesRole = (role == null || role.isEmpty() || staff[3].equalsIgnoreCase(role)); 
+                boolean matchesGender = (gender == null || gender.isEmpty() || staff[4].equalsIgnoreCase(gender)); 
+                boolean matchesAge = (age == null || age.isEmpty() || staff[5].equals(age)); 
+    
+                if (matchesRole && matchesGender && matchesAge) {
+                    filteredList.add(staff);
+                }
+            } else {
+                System.err.println("Staff record does not have enough data: " + Arrays.toString(staff));
             }
         }
-
-        return filteredList;
+    
+        return filteredList; // Add this line to return the filtered list
     }
-
+    
 }

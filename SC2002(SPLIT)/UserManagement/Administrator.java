@@ -21,13 +21,11 @@ public class Administrator extends Users implements InventoryEditor {
     private final appointmentOutcomeManager appointmentOutcomeManager;
     private final userManager userManager;
 
-    // Constructor
     public Administrator(String userID, staffManager staffManager, medicineManager medicineManager,
                          orderRequestManager orderRequestManager, appointmentManager appointmentManager,
                          appointmentOutcomeManager appointmentOutcomeManager, userManager userManager) throws IOException {
-        super(userID, userManager);  // Passes the userID and userManager to the superclass Users
+        super(userID, userManager);  
 
-        // Initialize fields with constructor parameters
         this.staffManager = staffManager;
         this.medicineManager = medicineManager;
         this.orderRequestManager = orderRequestManager;
@@ -81,7 +79,6 @@ public class Administrator extends Users implements InventoryEditor {
     }
 
 
-// View and Manage Hospital Staff
 private void manageHospitalStaff(Scanner sc) {
     System.out.println("=== View and Manage Hospital Staff ===");
     System.out.println("1. View Staff");
@@ -89,7 +86,7 @@ private void manageHospitalStaff(Scanner sc) {
     System.out.print("Please select an option (1-2): ");
 
     int staffChoice = sc.nextInt();
-    sc.nextLine(); // Consume newline
+    sc.nextLine(); 
 
     switch (staffChoice) {
         case 1:
@@ -104,7 +101,6 @@ private void manageHospitalStaff(Scanner sc) {
     }
 }
 
-// View staff with option to filter
 private void viewStaff(Scanner sc) {
     System.out.println("=== View Staff Options ===");
     System.out.println("1. View All Staff");
@@ -112,7 +108,7 @@ private void viewStaff(Scanner sc) {
     System.out.print("Please select an option (1-2): ");
 
     int choice = sc.nextInt();
-    sc.nextLine(); // Consume newline
+    sc.nextLine(); 
 
     try {
         if (choice == 1) {
@@ -134,7 +130,6 @@ private void viewStaff(Scanner sc) {
     }
 }
 
-// Method to filter staff
 private void filterStaff(Scanner sc) throws IOException {
     System.out.println("=== Filter Staff ===");
     System.out.println("1. Filter by Role");
@@ -181,7 +176,6 @@ private void filterStaff(Scanner sc) throws IOException {
     displayFilteredStaff(filteredStaff);
 }
 
-// Helper method to display staff members
 private void displayStaffList(List<String[]> staffList) {
     if (staffList.isEmpty()) {
         System.out.println("No staff members found.");
@@ -197,7 +191,6 @@ private void displayStaffList(List<String[]> staffList) {
     }
 }
 
-// Helper method to display filtered staff members
 private void displayFilteredStaff(List<String[]> filteredStaff) {
     if (filteredStaff == null || filteredStaff.isEmpty()) {
         System.out.println("No staff members found for the given filter.");
@@ -207,7 +200,6 @@ private void displayFilteredStaff(List<String[]> filteredStaff) {
     }
 }
 
-// Manage Staff options
 private void manageStaff(Scanner sc) {
     System.out.println("Manage Staff Options:");
     System.out.println("1. Add New Staff");
@@ -239,7 +231,6 @@ private void manageStaff(Scanner sc) {
 
 }
 
-    // Update staff details
     private void updateStaff(Scanner sc) {
         System.out.print("Enter the UserID of the staff to update: ");
         String updateUserID = sc.nextLine();
@@ -281,7 +272,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Remove staff
     private void removeStaff(Scanner sc) {
         System.out.print("Enter the UserID of the staff to remove: ");
         String removeUserID = sc.nextLine();
@@ -298,7 +288,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Manage Medication Inventory
     private void manageMedicationInventory(Scanner sc) {
         System.out.println("=== View and Manage Medication Inventory ===");
         System.out.println("1. View Medication List");
@@ -307,7 +296,7 @@ private void manageStaff(Scanner sc) {
         System.out.print("Please select an option (1-3): ");
 
         int medChoice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+        sc.nextLine(); 
 
         switch (medChoice) {
             case 1:
@@ -325,7 +314,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Approve Replenishment Requests
     private void approveReplenishmentRequest(Scanner sc) {
         System.out.println("=== Approve Replenishment Requests ===");
         viewPendingRequests();
@@ -334,7 +322,6 @@ private void manageStaff(Scanner sc) {
         approveRequest(requestID);
     }
 
-    // View Medication List (from InventoryEditor interface)
     @Override
     public void getMedicationList() {
         try {
@@ -358,7 +345,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Update Stock Level (from InventoryEditor interface)
     @Override
     public void updateStockLevel(Scanner sc) {
         getMedicationList();
@@ -410,7 +396,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Update Low Stock Level (from InventoryEditor interface)
     @Override
     public void updateLowStockLevel(Scanner sc) {
         System.out.print("Enter Medication ID: ");
@@ -432,7 +417,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // Approve replenishment request
     public void approveRequest(String requestID) {
         try {
             String[] request = orderRequestManager.getReplenishmentRequestByID(requestID);
@@ -468,7 +452,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // View Appointment Details
     public void viewAppointmentDetails() {
         try {
             List<String[]> appointments = appointmentManager.getAppointments();
@@ -492,7 +475,6 @@ private void manageStaff(Scanner sc) {
         }
     }
 
-    // View pending replenishment requests
     public void viewPendingRequests() {
         try {
             List<String[]> pendingRequests = orderRequestManager.getPendingReplenishmentRequests();

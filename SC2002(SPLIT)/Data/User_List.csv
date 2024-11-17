@@ -2,8 +2,7 @@ User ID,Name,Password,Role,Email,Contact Number
 D001,John Smith,password123,Doctor,john.smith@example.com,91234567
 D002,Emily Clarke,password456,Doctor,emily.clarke@example.com,92345678
 P001,Mark Lee,password789,Pharmacist,mark.lee@example.com,93456789
-A001,Sarah Lee,password,Administrator,sarah.lee@example.com,94567890
+A001,Sarah Lee,newpassword,Administrator,sarah.lee@example.com,94567890
 D003,Lucy Adams,newpassword123,Doctor,dr_brown@gmail.com,98857665
-P1001,Alice,password123,Patient,alice@example.com,96546422
+P1001,Alice,password123,Patient,alice123@example.com,84840686
 P1002,Bob Stone,passworduvw,Patient,bob.stone@example.com,99876543
-P1003,name,passwordrst,Patient,email,12345678

@@ -18,8 +18,7 @@ public class UserMenus {
         String prescriptionFilePath = "SC2002(SPLIT)/Data/Prescription.csv";
     
 
-        CSVReader csvReader = new CSVReader();
-        CSVWriter csvWriter = new CSVWriter();
+
 
         appointmentManager appointmentManager = new appointmentManager(appointmentsFilePath);
         medicalRecordManager medicalRecordManager = new medicalRecordManager(medicalRecordsFilePath);

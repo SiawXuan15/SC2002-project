@@ -3,6 +3,4 @@ S001,D001,John Smith,Doctor,Male,45,Cardiology,91234567,john.smith@example.com
 S002,D002,Emily Clarke,Doctor,Female,38,Neurology,92345678,emily.clarke@example.com
 S003,P001,Mark Lee,Pharmacist,Male,29,Pharmacy,93456789,mark.lee@example.com
 S004,A001,Sarah Lee,Administrator,Female,40,Administration,94567890,sarah.lee@example.com
-S005,D003,Lucy Adams,Doctor,Female,34,Pediatrics,98857665,lucy.adams@example.com
-S006,D003,Lucy Chan,Doctor,Female,24,Anus Care,83951234,lucy.chan.ac@example.com
-S007,D004,Lucy Chan,Doctor,Female,24,General Practice,83951234,lucy.chan@example.comS008
+S005,Lucy,Doctor,female,25,cardiologist,89045674,89034567,taylor@example.com

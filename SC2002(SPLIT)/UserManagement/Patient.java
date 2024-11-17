@@ -185,27 +185,26 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
         public void updatePatientInformation() {
             try {
                 List<String[]> patients = patientManager.getPatientList();
-    
                 String[] patientRecord = null;
                 for (String[] patient : patients) {
-                    if (patient[1].equalsIgnoreCase(userID)) { 
+                    if (patient[1].equalsIgnoreCase(userID)) {
                         patientRecord = patient;
                         break;
                     }
                 }
-    
+        
                 if (patientRecord == null) {
                     System.out.println("No patient record found for User ID: " + userID);
                     return;
                 }
-    
+        
                 Scanner scanner = new Scanner(System.in);
                 boolean updating = true;
-    
+        
                 boolean nameUpdated = false;
                 boolean emailUpdated = false;
                 boolean contactUpdated = false;
-    
+        
                 while (updating) {
                     System.out.println("Select what you want to update:");
                     System.out.println("1. Name");
@@ -215,14 +214,14 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
                     System.out.println("5. Email");
                     System.out.println("6. Date of Birth");
                     System.out.println("7. Quit to go back to main menu");
-    
+        
                     int choice = scanner.nextInt();
-                    scanner.nextLine(); 
-    
+                    scanner.nextLine();
+        
                     switch (choice) {
                         case 1:
                             System.out.print("Enter new name: ");
-                            patientRecord[3] = scanner.nextLine(); 
+                            patientRecord[3] = scanner.nextLine();
                             nameUpdated = true;
                             break;
                         case 2:
@@ -232,7 +231,7 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
                                 System.out.print("Invalid gender. Please enter 'Male' or 'Female': ");
                                 gender = scanner.nextLine().trim();
                             }
-                            patientRecord[5] = gender; 
+                            patientRecord[5] = gender;
                             break;
                         case 3:
                             System.out.print("Enter new contact number: ");
@@ -241,24 +240,24 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
                                 System.out.print("Invalid contact number. It should start with 8 or 9 and have 8 digits. Please try again: ");
                                 contact = scanner.nextLine().trim();
                             }
-                            patientRecord[7] = contact; 
+                            patientRecord[7] = contact;
                             contactUpdated = true;
                             break;
                         case 4:
                             System.out.print("Enter new payment method: ");
-                            patientRecord[9] = scanner.nextLine(); 
+                            patientRecord[9] = scanner.nextLine();
                             break;
                         case 5:
                             System.out.print("Enter new email address: ");
-                            patientRecord[8] = scanner.nextLine(); 
+                            patientRecord[8] = scanner.nextLine();
                             emailUpdated = true;
                             break;
                         case 6:
                             System.out.print("Enter new date of birth (yyyy-mm-dd): ");
                             String dobString = scanner.nextLine().trim();
                             try {
-                                LocalDate.parse(dobString); 
-                                patientRecord[4] = dobString; 
+                                LocalDate.parse(dobString);
+                                patientRecord[4] = dobString;
                             } catch (Exception e) {
                                 System.out.println("Invalid date format. Please enter in yyyy-mm-dd format.");
                             }
@@ -269,57 +268,51 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
                         default:
                             System.out.println("Invalid choice. Please try again.");
                     }
-                    
                 }
-    
+        
                 patientManager.updatePatientList(patients);
-    
+        
                 if (nameUpdated || emailUpdated || contactUpdated) {
-                    List<String[]> users = userManager.getUsersList(); 
+                    List<String[]> users = userManager.getUsersList();
                     for (String[] user : users) {
-                        if (user[0].equalsIgnoreCase(userID)) { 
+                        if (user[0].equalsIgnoreCase(userID)) {
                             if (nameUpdated) {
-                                user[1] = patientRecord[3]; 
+                                user[1] = patientRecord[3];
                             }
                             if (emailUpdated) {
-                                user[4] = patientRecord[8]; 
+                                user[4] = patientRecord[8];
                             }
                             if (contactUpdated) {
-                                user[5] = patientRecord[7]; 
+                                user[5] = patientRecord[7];
                             }
                             break;
                         }
                     }
-                    userManager.updateUsersList(users); 
+                    userManager.updateUsersList(users);
                 }
-    
+        
+                List<String[]> medicalRecords = medicalRecordManager.getMedicalRecords();
+                for (String[] record : medicalRecords) {
+                    if (record[2].equalsIgnoreCase(userID)) {
+                        if (nameUpdated) {
+                            record[3] = patientRecord[3];
+                        }
+                        record[4] = patientRecord[4];
+                        record[5] = patientRecord[5];
+                        record[6] = patientRecord[7];
+                        record[7] = patientRecord[8];
+                        break;
+                    }
+                }
+                medicalRecordManager.updateMedicalRecordList(medicalRecords);
+        
+                System.out.println("Patient information updated successfully!");
+        
             } catch (IOException e) {
                 System.err.println("Error updating patient information: " + e.getMessage());
             }
         }
-    
-            public void updateMedicalRecordIfNecessary(String[] patientRecord, boolean nameUpdated) {
-                try {
-                    List<String[]> medicalRecords = medicalRecordManager.getMedicalRecords(); 
-                    for (String[] record : medicalRecords) {
-                        if (record[2].equalsIgnoreCase(userID)) { 
-                            if (nameUpdated) {
-                                record[3] = patientRecord[3]; 
-                            }
-                            record[4] = patientRecord[4]; 
-                            record[5] = patientRecord[5]; 
-                            record[6] = patientRecord[7]; 
-                            record[7] = patientRecord[8]; 
-                            break;
-                        }
-                    }
-                    medicalRecordManager.updateMedicalRecordList(medicalRecords); 
         
-                    System.out.println("Patient information updated successfully!");
-                } catch (IOException e) {
-                    System.err.println("Error updating patient information: " + e.getMessage());
-                }
-            }
                 
             @Override
             public void scheduleAppointment() {
@@ -408,7 +401,7 @@ public class Patient extends Users implements Schedulable, PaymentProcessor {
                 }
             }
         
-            
+            @Override
             public void rescheduleAppointment() {
                 try {
                     Scanner scanner = new Scanner(System.in);
