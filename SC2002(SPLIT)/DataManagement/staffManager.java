@@ -89,7 +89,12 @@ public class staffManager {
 
         // Input Role
         System.out.print("Role: ");
-        String role = sc.nextLine();
+        String role = sc.nextLine().trim().toLowerCase(); // Normalize input to lowercase
+        while (!role.equals("doctor") && !role.equals("patient") 
+                && !role.equals("administrator") && !role.equals("pharmacist")) {
+            System.out.print("Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacists: ");
+            role = sc.nextLine().trim().toLowerCase(); // Re-prompt and normalize input
+        }
         String rolePrefix = getRolePrefix(role);
         String userID = generateUserID(rolePrefix, staffFilePath);
         System.out.println("Generated User ID: " + userID);
