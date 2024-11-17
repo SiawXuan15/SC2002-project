@@ -1,0 +1,6 @@
+Request ID,Med ID,Medication Name,Quantity,Status
+1,M001,Paracetamol,50,Approved
+2,M002,Ibuprofen,30,Pending
+3,M003,Amoxicillin,20,Rejected
+4,M001,Paracetamol,25,Pending
+5,M002,Ibuprofen,10,Pending
