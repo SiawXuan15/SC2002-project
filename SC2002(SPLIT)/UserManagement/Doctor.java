@@ -4,7 +4,7 @@ import DataManagement.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Scanner; // TESTING
 
 public class Doctor extends Users {
     private List<Patient> patientList;
