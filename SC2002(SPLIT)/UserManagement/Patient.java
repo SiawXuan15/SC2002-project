@@ -460,6 +460,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                 try {
                     Scanner scanner = new Scanner(System.in);
                     List<String[]> appointments = appointmentManager.getAppointments(); // Fetch appointments from appointmentManager
+                    List<String[]> currentAppointments = new ArrayList<>();
                     String doctorName;
         
                     // Display the appointments along with doctor names
@@ -467,6 +468,8 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                     for (String[] appointment : appointments) {
                         if (appointment[1].equals(this.getUserID()) && !("Completed".equals(appointment[5]))) { // Only show the patient's appointments
                             doctorName = doctorManager.getDoctorName(appointment[2]);
+
+                            currentAppointments.add(appointment);
         
                             System.out.println("Appointment ID: " + appointment[0]);
                             System.out.println("Doctor: " + doctorName); // Print doctor name
@@ -476,12 +479,17 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                             System.out.println("-------------------------");
                         }
                     }
+
+                    if (currentAppointments.isEmpty()) {
+                        System.out.println("You have no appointments to reschedule.");
+                        return;
+                    }
         
                     System.out.println("Enter Appointment ID to reschedule:");
                     String appointmentID = scanner.next(); // User enters the Appointment ID
         
                     // Find the selected appointment and create the updated appointment data
-                    for (String[] appointment : appointments) {
+                    for (String[] appointment : currentAppointments) {
                         if (appointment[0].equals(appointmentID)) {
                             appointment[1] = "";  // Blank patient ID
                             appointment[5] = "Available";  // Status "Available"
@@ -489,6 +497,10 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                             scheduleAppointment(); // Schedule a new appointment
         
                             appointmentOutcomeManager.removeFromOutcome(appointmentID); // Remove the canceled appointment from outcome records
+                            
+                            // Call the updateAppointment method to persist the changes
+                            appointmentManager.updateAppointment(appointment[0], appointment);
+
                             break;
                         }
                     }
@@ -562,7 +574,7 @@ public class Patient extends Users implements SchedulePatient, PaymentProcessor 
                         // Display the scheduled appointments along with doctor names
                         System.out.println("Your Scheduled Appointments:");
                         for (String[] appointment : patientAppointments) {
-                            if ("Pending".equals(appointment[5]) || "Cancelled".equals(appointment[5])) {  // Only display "Scheduled" appointments
+                            if ("Pending".equals(appointment[5]) || "Cancelled".equals(appointment[5]) || "Confirmed".equals(appointment[5]) || "Completed".equals(appointment[5])) {  // Only display "Scheduled" appointments
                                 String doctorName = doctorManager.getDoctorName(appointment[2]);
             
                                 scheduledAppointments.add(appointment);
