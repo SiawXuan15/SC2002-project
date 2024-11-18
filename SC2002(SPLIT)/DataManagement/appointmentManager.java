@@ -12,10 +12,6 @@ public class appointmentManager {
         this.appointmentsFilePath = appointmentsFilePath;
     }
 
-    // public String generateAppId() {
-    //     return "AP" + UUID.randomUUID().toString();
-    // }
-
     public String generateAppId(List<String[]> appointmentList) {
         int maxID = 0;
         for (String[] appointment : appointmentList) {
