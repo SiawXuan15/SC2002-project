@@ -133,15 +133,23 @@ public class staffManager {
     }
 
     public boolean removeStaff(String userID) throws IOException {
-        List<String[]> staffList = getStaffList(); 
+        // Remove staff from Staff_List.csv
+        List<String[]> staffList = getStaffList();
+        boolean removedFromStaff = staffList.removeIf(staff -> staff[1].equals(userID));
 
-        boolean removed = staffList.removeIf(staff -> staff[1].equals(userID)); 
-
-        if (removed) {
-            updateStaffList(staffList); 
+        if (removedFromStaff) {
+            updateStaffList(staffList);
         }
 
-        return removed; 
+        // Remove user from User_List.csv
+        List<String[]> userList = CSVReader.readCSV("SC2002(SPLIT)/Data/User_List.csv");
+        boolean removedFromUser = userList.removeIf(user -> user[0].equals(userID));
+
+        if (removedFromUser) {
+            CSVWriter.writeCSV("SC2002(SPLIT)/Data/User_List.csv", userList);
+        }
+
+        return removedFromStaff && removedFromUser;
     }
 
     public void updateStaffList(List<String[]> updatedStaff) throws IOException {
