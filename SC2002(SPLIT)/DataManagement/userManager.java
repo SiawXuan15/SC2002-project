@@ -87,15 +87,15 @@ public class userManager {
         return null; 
     }
 
-    public void updateUserInfo(String userID, String[] updatedStaffDetails) throws IOException {
+    public void updateUserInfo(String userID, String[] updatedUserDetails) throws IOException {
         // Assuming CSVReader is a utility to read CSV files into a List of String arrays
-        List<String[]> staffList = CSVReader.readCSV(staffFilePath);
+        List<String[]> userList = CSVReader.readCSV(userFilePath);
     
         boolean updated = false;
-        for (String[] staff : staffList) {
-            if (staff[0].equals(userID)) {
-                // Update the staff details
-                System.arraycopy(updatedStaffDetails, 0, staff, 0, updatedStaffDetails.length);
+        for (String[] user : userList) {
+            if (user[0].equals(userID)) {
+                // Update the user details
+                System.arraycopy(updatedUserDetails, 0, user, 0, updatedUserDetails.length);
                 updated = true;
                 break;
             }
@@ -103,10 +103,10 @@ public class userManager {
     
         if (updated) {
             // Write back the updated list to the CSV
-            updateUsersList(staffList);
-            System.out.println("Staff information updated successfully.");
+            writeCSV(userFilePath, userList);
+            System.out.println("User information updated successfully.");
         } else {
-            System.out.println("Staff with UserID " + userID + " not found.");
+            System.out.println("User with UserID " + userID + " not found.");
         }
     }
 }

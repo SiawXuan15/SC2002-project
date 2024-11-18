@@ -2,4 +2,3 @@ Staff ID,User ID,Name,Role,Gender,Age,Specialization,Contact,Email
 S001,D001,John Smith,Doctor,Male,45,Cardiology,91234567,john.smith@example.com
 S002,D002,Emily Clarke,Doctor,Female,38,Neurology,92345678,emily.clarke@example.com
 S003,P001,Mark Lee,Pharmacist,Male,29,Pharmacy,93456789,mark.lee@example.com
-S004,A001,Sarah Lee,Administrator,Female,40,Administration,94567890,sarah.lee@example.com

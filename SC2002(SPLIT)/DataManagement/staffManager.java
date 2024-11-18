@@ -76,61 +76,140 @@ public class staffManager {
         Scanner sc = new Scanner(System.in);
         List<String[]> staffList = getStaffList();
 
+
+
+
         String nextStaffID = generateNextStaffID(staffList);
 
+
+
+
         System.out.println("Enter details for new staff.");
+
+
+
 
         System.out.print("Name: ");
         String name = sc.nextLine();
 
+
+
+
         System.out.print("Role: ");
-        String role = sc.nextLine().trim().toLowerCase(); 
-        while (!role.equals("doctor") && !role.equals("patient") 
+        String orirole = sc.nextLine();
+        String role = orirole.trim().toLowerCase();
+        while (!role.equals("doctor") && !role.equals("patient")
                 && !role.equals("administrator") && !role.equals("pharmacist")) {
-            System.out.print("Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacist: ");
-            role = sc.nextLine().trim().toLowerCase(); 
+            System.out.print(
+                    "Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacist: ");
+            orirole= sc.nextLine();
+            role = orirole.trim().toLowerCase();
         }
         String rolePrefix = getRolePrefix(role);
         String userID = generateUserID(rolePrefix, staffFilePath);
         System.out.println("Generated User ID: " + userID);
+
+
+
 
         String gender;
         while (true) {
             System.out.print("Gender: ");
             gender = sc.nextLine();
             if (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female")) {
-                gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase(); 
+                gender = gender.substring(0, 1).toUpperCase() + gender.substring(1).toLowerCase();
                 break;
             } else {
                 System.out.println("Invalid Gender. Please enter Male or Female.");
             }
         }
 
+
+
+
         System.out.print("Age: ");
-        String age = sc.nextLine();
+        String age;
+        while (true) {
+            age = sc.nextLine().trim();
+            try {
+                int validAge = Integer.parseInt(age);
+                if (validAge >= 20 && validAge <= 100) {
+                    break;
+                } else {
+                    System.out.println("Invalid age. Please enter a number between 20 and 100.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number for age.");
+            }
+        }
+     
+
+
+
 
         System.out.print("Specialization: ");
         String specialization = sc.nextLine();
 
+
+
+
         System.out.print("Contact Number: ");
-        String contactNumber = sc.nextLine();
+        String contactNumber;
+        while (true) {
+            contactNumber = sc.nextLine().trim();
+            if (contactNumber.matches("^[89]\\d{7}$")) { // Starts with 8 or 9 and is exactly 8 digits
+                break;
+            } else {
+                System.out.println("Invalid contact number. It must start with 8 or 9 and be exactly 8 digits.");
+            }
+        }
+
+
+
 
         System.out.print("Email: ");
-        String email = sc.nextLine();
+        String email;
+        while (true) {
+            email = sc.nextLine().trim();
+            if (email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) { // Basic email regex
+                break;
+            } else {
+                System.out.println("Invalid email address. Please enter a valid email.");
+            }
+        }
 
-        // Add new staff to Staff_List.csv
-        String[] newStaff = {nextStaffID, userID, name, role, gender, age, specialization, contactNumber, email, "password"};
+
+
+
+        String[] newStaff = {
+                nextStaffID, // Staff ID
+                userID, // User ID
+                name, // Name
+                orirole, // Role
+                gender, // Gender
+                age, // Age
+                specialization, // Specialization
+                contactNumber, // Contact
+                email // Email
+        };
+
+
+
         staffList.add(newStaff);
         CSVWriter.writeCSV(staffFilePath, staffList);
 
+
         // Add new user to User_List.csv
         List<String[]> userList = CSVReader.readCSV("SC2002(SPLIT)/Data/User_List.csv");
-        String[] newUser = {userID, name, "password", role, email, contactNumber}; // Assuming a default password
+        String[] newUser = { userID, name, "password", role, email, contactNumber }; // Assuming a default password
         userList.add(newUser);
         CSVWriter.writeCSV("SC2002(SPLIT)/Data/User_List.csv", userList);
 
+
         System.out.println("New staff member added successfully.");
     }
+
+
 
     public boolean removeStaff(String userID) throws IOException {
         // Remove staff from Staff_List.csv
