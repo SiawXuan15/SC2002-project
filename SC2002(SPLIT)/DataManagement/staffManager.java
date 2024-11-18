@@ -201,7 +201,7 @@ public class staffManager {
 
         // Add new user to User_List.csv
         List<String[]> userList = CSVReader.readCSV("SC2002(SPLIT)/Data/User_List.csv");
-        String[] newUser = { userID, name, "password", role, email, contactNumber }; // Assuming a default password
+        String[] newUser = { userID, name, "password", orirole, email, contactNumber }; 
         userList.add(newUser);
         CSVWriter.writeCSV("SC2002(SPLIT)/Data/User_List.csv", userList);
 

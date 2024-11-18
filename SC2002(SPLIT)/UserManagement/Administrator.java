@@ -180,11 +180,7 @@ private void displayStaffList(List<String[]> staffList) {
     if (staffList.isEmpty()) {
         System.out.println("No staff members found.");
     } else {
-        System.out.printf("%-10s %-10s %-20s %-20s %-8s %-5s %-20s %-10s%n",
-                "StaffID", "UserID", "Name", "Role", "Gender", "Age", "Specialization", "Contact");
         System.out.println("=============================================================================================================");
- 
- 
         //for (String[] staff : staffList) {
      for (int i = 0; i < staffList.size(); i++) {
          String[] staff = staffList.get(i);
