@@ -253,27 +253,25 @@ private void updateStaff(Scanner sc) {
             staffToUpdate[2] = newName.isEmpty() ? staffToUpdate[2] : newName;
             userToUpdate[1] = newName.isEmpty() ? userToUpdate[1] : newName; // Update user name in User_List.csv
 
-            System.out.print("Role [" + staffToUpdate[3] + "]: ");
-            String newRole = sc.nextLine();
-            staffToUpdate[3] = newRole.isEmpty() ? staffToUpdate[3] : newRole;
-            userToUpdate[3] = newRole.isEmpty() ? userToUpdate[3] : newRole; // Update role in User_List.csv
+                System.out.print("Role [" + staffToUpdate[2] + "]: ");
+                String newRole = sc.nextLine();
+                staffToUpdate[2] = newRole.isEmpty() ? staffToUpdate[2] : newRole;
 
-            System.out.print("Gender [" + staffToUpdate[4] + "]: ");
-            String newGender = sc.nextLine();
-            staffToUpdate[4] = newGender.isEmpty() ? staffToUpdate[4] : newGender;
+                System.out.print("Gender [" + staffToUpdate[3] + "]: ");
+                String newGender = sc.nextLine();
+                staffToUpdate[3] = newGender.isEmpty() ? staffToUpdate[3] : newGender;
 
-            System.out.print("Age [" + staffToUpdate[5] + "]: ");
-            String newAge = sc.nextLine();
-            staffToUpdate[5] = newAge.isEmpty() ? staffToUpdate[5] : newAge;
+                System.out.print("Age [" + staffToUpdate[4] + "]: ");
+                String newAge = sc.nextLine();
+                staffToUpdate[4] = newAge.isEmpty() ? staffToUpdate[4] : newAge;
 
-            System.out.print("Specialization [" + staffToUpdate[6] + "]: ");
-            String newSpecialization = sc.nextLine();
-            staffToUpdate[6] = newSpecialization.isEmpty() ? staffToUpdate[6] : newSpecialization;
+                System.out.print("Specialization [" + staffToUpdate[5] + "]: ");
+                String newSpecialization = sc.nextLine();
+                staffToUpdate[5] = newSpecialization.isEmpty() ? staffToUpdate[5] : newSpecialization;
 
-            System.out.print("Contact [" + staffToUpdate[7] + "]: ");
-            String newContact = sc.nextLine();
-            staffToUpdate[7] = newContact.isEmpty() ? staffToUpdate[7] : newContact;
-            userToUpdate[5] = newContact.isEmpty() ? userToUpdate[5] : newContact; // Update contact in User_List.csv
+                System.out.print("Contact [" + staffToUpdate[6] + "]: ");
+                String newContact = sc.nextLine();
+                staffToUpdate[6] = newContact.isEmpty() ? staffToUpdate[6] : newContact;
 
             // Update both files
             staffManager.updateStaffInfo(updateUserID, staffToUpdate);

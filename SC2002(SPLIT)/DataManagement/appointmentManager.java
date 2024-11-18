@@ -12,8 +12,20 @@ public class appointmentManager {
         this.appointmentsFilePath = appointmentsFilePath;
     }
 
-    public String generateAppId() {
-        return "AP" + UUID.randomUUID().toString();
+    public String generateAppId(List<String[]> appointmentList) {
+        int maxID = 0;
+        for (String[] appointment : appointmentList) {
+            String appointmentID = appointment[0]; 
+            if (appointmentID.startsWith("AP")) {
+                try {
+                    int idNumber = Integer.parseInt(appointmentID.substring(2)); 
+                    maxID = Math.max(maxID, idNumber); 
+                } catch (NumberFormatException e) {
+                    
+                }
+            }
+        }
+        return "AP" + String.format("%03d", maxID + 1); 
     }
 
     public List<String[]> getAppointments() throws IOException {
