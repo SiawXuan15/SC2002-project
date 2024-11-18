@@ -229,14 +229,19 @@ public class Pharmacist extends Users implements InventoryMonitor {
         System.out.println("=== Prescription Requests ===");
 
 
-        for (String[] record : prescriptions) {
-            if (record == null || record.length < 7 || String.join("", record).trim().isEmpty()) {
+        // Start loop from index 1 to skip the header row
+        for (int i = 1; i < prescriptions.size(); i++) {
+            String[] record = prescriptions.get(i);
+
+
+            // Validate record to avoid null or incomplete entries
+            if (record == null || record.length < 8 || String.join("", record).trim().isEmpty()) {
                 continue;
             }
 
 
-            for (int i = 0; i < record.length; i++) {
-                record[i] = record[i].trim();
+            for (int j = 0; j < record.length; j++) {
+                record[j] = record[j].trim();
             }
 
 
@@ -251,6 +256,8 @@ public class Pharmacist extends Users implements InventoryMonitor {
             System.out.println("-------------------------");
         }
     }
+
+
 
 
     public void dispensePrescriptionForAppointment() {

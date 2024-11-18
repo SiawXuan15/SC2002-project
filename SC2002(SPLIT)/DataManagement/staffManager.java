@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;  
+import java.util.Scanner;
 
 public class staffManager {
     private final String staffFilePath;
 
     public staffManager(String staffFilePath) {
         this.staffFilePath = staffFilePath;
+    
     }
 
     public String[] getStaffByUserID(String userID) throws IOException {
@@ -86,7 +87,7 @@ public class staffManager {
         String role = sc.nextLine().trim().toLowerCase(); 
         while (!role.equals("doctor") && !role.equals("patient") 
                 && !role.equals("administrator") && !role.equals("pharmacist")) {
-            System.out.print("Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacists: ");
+            System.out.print("Invalid role. Please enter one of the following: doctor, patient, administrator, pharmacist: ");
             role = sc.nextLine().trim().toLowerCase(); 
         }
         String rolePrefix = getRolePrefix(role);
@@ -105,55 +106,30 @@ public class staffManager {
             }
         }
 
-        String age;
-        while (true) {
-            System.out.print("Age: ");
-            age = sc.nextLine();
-            try {
-                int ageInt = Integer.parseInt(age);
-                if (ageInt >= 0 && ageInt <= 100) {
-                    break;
-                } else {
-                    System.out.println("Invalid Age. It must be between 0 and 100.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid Age. Please enter a valid number.");
-            }
-        }
+        System.out.print("Age: ");
+        String age = sc.nextLine();
 
         System.out.print("Specialization: ");
         String specialization = sc.nextLine();
 
-        String contact;
-        while (true) {
-            System.out.print("Contact (8 digits, starts with 8 or 9): ");
-            contact = sc.nextLine();
-            if (contact.matches("^[89]\\d{7}$")) {
-                break;
-            } else {
-                System.out.println("Invalid Contact. It must start with 8 or 9 and have 8 digits.");
-            }
-        }
+        System.out.print("Contact Number: ");
+        String contactNumber = sc.nextLine();
 
-        String email;
-        while (true) {
-            System.out.print("Email: ");
-            email = sc.nextLine();
-            if (email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) { 
-                break;
-            } else {
-                System.out.println("Invalid Email. Please enter a valid email address.");
-            }
-        }
+        System.out.print("Email: ");
+        String email = sc.nextLine();
 
-        String[] newStaff = {nextStaffID, userID, name, role, gender, age, specialization, contact, email};
+        // Add new staff to Staff_List.csv
+        String[] newStaff = {nextStaffID, userID, name, role, gender, age, specialization, contactNumber, email, "password"};
+        staffList.add(newStaff);
+        CSVWriter.writeCSV(staffFilePath, staffList);
 
-        try {
-            CSVWriter.appendToCSV(staffFilePath, newStaff);
-            System.out.println("New staff added successfully with Staff ID: " + nextStaffID);
-        } catch (IOException e) {
-            System.err.println("Error adding new staff: " + e.getMessage());
-        }
+        // Add new user to User_List.csv
+        List<String[]> userList = CSVReader.readCSV("SC2002(SPLIT)/Data/User_List.csv");
+        String[] newUser = {userID, name, "password", role, email, contactNumber}; // Assuming a default password
+        userList.add(newUser);
+        CSVWriter.writeCSV("SC2002(SPLIT)/Data/User_List.csv", userList);
+
+        System.out.println("New staff member added successfully.");
     }
 
     public boolean removeStaff(String userID) throws IOException {
@@ -191,6 +167,7 @@ public class staffManager {
             System.out.println("Staff with UserID " + userID + " not found.");
         }
     }
+    
 
     public List<String[]> filterStaff(String criterion, String value) throws IOException {
         List<String[]> staffList = getStaffList();

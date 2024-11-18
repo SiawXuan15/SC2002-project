@@ -34,7 +34,7 @@ public class UserMenus {
                 appointmentOutcomeFilePath,
                 medicineFilePath,
                 appointmentManager);
-        userManager userManager = new userManager(userFilePath);
+        userManager userManager = new userManager(userFilePath, staffFilePath);
         medicineManager medicineManager = new medicineManager(medicineFilePath);
         appointmentOutcomeManager appointmentOutcomeManager = new appointmentOutcomeManager(appointmentOutcomeFilePath,
                 appointmentsFilePath);

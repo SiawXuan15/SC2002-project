@@ -235,46 +235,60 @@ private void manageStaff(Scanner sc) {
 
 }
 
-    private void updateStaff(Scanner sc) {
-        System.out.print("Enter the UserID of the staff to update: ");
-        String updateUserID = sc.nextLine();
-        try {
-            String[] staffToUpdate = staffManager.getStaffByUserID(updateUserID);
-            if (staffToUpdate != null) {
-                System.out.println("Enter new details for the staff (leave blank to keep current value):");
-                System.out.print("Name [" + staffToUpdate[1] + "]: ");
-                String newName = sc.nextLine();
-                staffToUpdate[1] = newName.isEmpty() ? staffToUpdate[1] : newName;
+private void updateStaff(Scanner sc) {
+    System.out.print("Enter the UserID of the staff to update: ");
+    String updateUserID = sc.nextLine();
+    try {
+        String[] staffToUpdate = staffManager.getStaffByUserID(updateUserID);
+        String[] userToUpdate = userManager.getUserById(updateUserID); // Assuming a similar method for UserList
 
-                System.out.print("Role [" + staffToUpdate[2] + "]: ");
-                String newRole = sc.nextLine();
-                staffToUpdate[2] = newRole.isEmpty() ? staffToUpdate[2] : newRole;
+        if (staffToUpdate != null && userToUpdate != null) {
+            System.out.println("Enter new details for the staff (leave blank to keep current value):");
 
-                System.out.print("Gender [" + staffToUpdate[3] + "]: ");
-                String newGender = sc.nextLine();
-                staffToUpdate[3] = newGender.isEmpty() ? staffToUpdate[3] : newGender;
+            // UserID should not be changed
+            System.out.println("UserID: " + staffToUpdate[0]);
 
-                System.out.print("Age [" + staffToUpdate[4] + "]: ");
-                String newAge = sc.nextLine();
-                staffToUpdate[4] = newAge.isEmpty() ? staffToUpdate[4] : newAge;
+            System.out.print("Name [" + staffToUpdate[2] + "]: ");
+            String newName = sc.nextLine();
+            staffToUpdate[2] = newName.isEmpty() ? staffToUpdate[2] : newName;
+            userToUpdate[1] = newName.isEmpty() ? userToUpdate[1] : newName; // Update user name in User_List.csv
 
-                System.out.print("Specialization [" + staffToUpdate[5] + "]: ");
-                String newSpecialization = sc.nextLine();
-                staffToUpdate[5] = newSpecialization.isEmpty() ? staffToUpdate[5] : newSpecialization;
+            System.out.print("Role [" + staffToUpdate[3] + "]: ");
+            String newRole = sc.nextLine();
+            staffToUpdate[3] = newRole.isEmpty() ? staffToUpdate[3] : newRole;
+            userToUpdate[3] = newRole.isEmpty() ? userToUpdate[3] : newRole; // Update role in User_List.csv
 
-                System.out.print("Contact [" + staffToUpdate[6] + "]: ");
-                String newContact = sc.nextLine();
-                staffToUpdate[6] = newContact.isEmpty() ? staffToUpdate[6] : newContact;
+            System.out.print("Gender [" + staffToUpdate[4] + "]: ");
+            String newGender = sc.nextLine();
+            staffToUpdate[4] = newGender.isEmpty() ? staffToUpdate[4] : newGender;
 
-                staffManager.updateStaffInfo(updateUserID, staffToUpdate);
-                System.out.println("Staff information updated successfully.");
-            } else {
-                System.out.println("Staff with UserID " + updateUserID + " not found.");
-            }
-        } catch (IOException e) {
-            System.err.println("Error updating staff information: " + e.getMessage());
+            System.out.print("Age [" + staffToUpdate[5] + "]: ");
+            String newAge = sc.nextLine();
+            staffToUpdate[5] = newAge.isEmpty() ? staffToUpdate[5] : newAge;
+
+            System.out.print("Specialization [" + staffToUpdate[6] + "]: ");
+            String newSpecialization = sc.nextLine();
+            staffToUpdate[6] = newSpecialization.isEmpty() ? staffToUpdate[6] : newSpecialization;
+
+            System.out.print("Contact [" + staffToUpdate[7] + "]: ");
+            String newContact = sc.nextLine();
+            staffToUpdate[7] = newContact.isEmpty() ? staffToUpdate[7] : newContact;
+            userToUpdate[5] = newContact.isEmpty() ? userToUpdate[5] : newContact; // Update contact in User_List.csv
+
+            // Update both files
+            staffManager.updateStaffInfo(updateUserID, staffToUpdate);
+            userManager.updateUserInfo(updateUserID, userToUpdate);
+
+            System.out.println("Staff information updated successfully.");
+        } else {
+            System.out.println("Staff with UserID " + updateUserID + " not found.");
         }
+    } catch (IOException e) {
+        System.err.println("Error updating staff information: " + e.getMessage());
     }
+}
+
+
 
     private void removeStaff(Scanner sc) {
         System.out.print("Enter the UserID of the staff to remove: ");

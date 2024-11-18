@@ -5,9 +5,11 @@ import java.util.List;
 
 public class userManager {
     private final String userFilePath;
+    private final String staffFilePath; 
 
-    public userManager(String userFilePath) {
+    public userManager(String userFilePath, String staffFilePath) {
         this.userFilePath = userFilePath;
+        this.staffFilePath = staffFilePath;
     }
 
     private List<String[]> readCSV(String filePath) throws IOException {
@@ -83,5 +85,28 @@ public class userManager {
             }
         }
         return null; 
+    }
+
+    public void updateUserInfo(String userID, String[] updatedStaffDetails) throws IOException {
+        // Assuming CSVReader is a utility to read CSV files into a List of String arrays
+        List<String[]> staffList = CSVReader.readCSV(staffFilePath);
+    
+        boolean updated = false;
+        for (String[] staff : staffList) {
+            if (staff[0].equals(userID)) {
+                // Update the staff details
+                System.arraycopy(updatedStaffDetails, 0, staff, 0, updatedStaffDetails.length);
+                updated = true;
+                break;
+            }
+        }
+    
+        if (updated) {
+            // Write back the updated list to the CSV
+            updateUsersList(staffList);
+            System.out.println("Staff information updated successfully.");
+        } else {
+            System.out.println("Staff with UserID " + userID + " not found.");
+        }
     }
 }
