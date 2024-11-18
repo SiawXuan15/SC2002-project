@@ -429,10 +429,12 @@ public class Doctor extends Users {
 
 
         List<String[]> patientList = new ArrayList<>();
+        List<String[]> appointmentList = new ArrayList<>();
 
 
         try {
             patientList = patientManager.getPatientList(); // Fetch patients from patientManager
+            appointmentList = appointmentManager.getAppointments();
         } catch (IOException e) {
             System.out.println("Error fetching appointments or patient list: " + e.getMessage());
             return; // Exit if there's an issue fetching data
@@ -472,7 +474,7 @@ public class Doctor extends Users {
         String followUpTime = scanner.nextLine();
 
 
-        String newAppId = appointmentManager.generateAppId();
+        String newAppId = appointmentManager.generateAppId(appointmentList);
         String doctorId = this.getUserID();
 
 
