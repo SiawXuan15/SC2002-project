@@ -242,27 +242,27 @@ private void manageStaff(Scanner sc) {
             String[] staffToUpdate = staffManager.getStaffByUserID(updateUserID);
             if (staffToUpdate != null) {
                 System.out.println("Enter new details for the staff (leave blank to keep current value):");
-                System.out.print("Name [" + staffToUpdate[1] + "]: ");
+                System.out.print("Name [" + staffToUpdate[2] + "]: ");
                 String newName = sc.nextLine();
                 staffToUpdate[1] = newName.isEmpty() ? staffToUpdate[1] : newName;
 
-                System.out.print("Role [" + staffToUpdate[2] + "]: ");
+                System.out.print("Role [" + staffToUpdate[3] + "]: ");
                 String newRole = sc.nextLine();
                 staffToUpdate[2] = newRole.isEmpty() ? staffToUpdate[2] : newRole;
 
-                System.out.print("Gender [" + staffToUpdate[3] + "]: ");
+                System.out.print("Gender [" + staffToUpdate[4] + "]: ");
                 String newGender = sc.nextLine();
                 staffToUpdate[3] = newGender.isEmpty() ? staffToUpdate[3] : newGender;
 
-                System.out.print("Age [" + staffToUpdate[4] + "]: ");
+                System.out.print("Age [" + staffToUpdate[5] + "]: ");
                 String newAge = sc.nextLine();
                 staffToUpdate[4] = newAge.isEmpty() ? staffToUpdate[4] : newAge;
 
-                System.out.print("Specialization [" + staffToUpdate[5] + "]: ");
+                System.out.print("Specialization [" + staffToUpdate[6] + "]: ");
                 String newSpecialization = sc.nextLine();
                 staffToUpdate[5] = newSpecialization.isEmpty() ? staffToUpdate[5] : newSpecialization;
 
-                System.out.print("Contact [" + staffToUpdate[6] + "]: ");
+                System.out.print("Contact [" + staffToUpdate[7] + "]: ");
                 String newContact = sc.nextLine();
                 staffToUpdate[6] = newContact.isEmpty() ? staffToUpdate[6] : newContact;
 
