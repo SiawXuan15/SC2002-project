@@ -1,1 +1,1 @@
-npx live-server
+
